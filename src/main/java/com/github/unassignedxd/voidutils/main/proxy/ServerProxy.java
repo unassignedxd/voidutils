@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ServerProxy implements IProxy {
@@ -23,4 +24,10 @@ public class ServerProxy implements IProxy {
     public void registerRenderer(Item item) {
 
     }
+
+    @Override
+    public void scheduleTask(Runnable runnable) {
+        FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(runnable);
+    }
+
 }

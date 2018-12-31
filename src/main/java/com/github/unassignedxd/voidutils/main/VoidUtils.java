@@ -1,5 +1,7 @@
 package com.github.unassignedxd.voidutils.main;
 
+import com.github.unassignedxd.voidutils.main.chunk.voidenergy.CapabilityVoidEnergy;
+import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -34,6 +36,8 @@ public class VoidUtils {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
+        CapabilityVoidEnergy.registerCap();
+        PacketHandler.init();
     }
 
     @Mod.EventHandler

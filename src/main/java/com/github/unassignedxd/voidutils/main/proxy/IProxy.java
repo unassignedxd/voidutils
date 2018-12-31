@@ -11,4 +11,6 @@ public interface IProxy {
 
     void registerRenderer(Item item);
 
+    void scheduleTask(Runnable runnable);
+
 }

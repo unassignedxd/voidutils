@@ -1,13 +1,15 @@
 package com.github.unassignedxd.voidutils.api.voidenergy;
 
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.chunk.Chunk;
 
 public interface IVoidChunk {
+
+    void update();
 
     void recieveVoid(int amount);
     void extractVoid(int amount);
 
-    ChunkPos getChunkPos();
+    Chunk getChunk();
 
     int getVoidStored();
     void setVoidStored(int amount);
