@@ -95,7 +95,7 @@ public class CapabilityVoidEnergy {
             World world = event.world;
             if(!world.isRemote && event.phase == TickEvent.Phase.END) {
                 if(world.getWorldTime() % 20 == 0) {
-                    world.profiler.func_194340_a(() -> VoidUtils.MOD_ID + ":onWorldTick");
+                    world.profiler.startSection(VoidUtils.MOD_ID + ":onWorldTick");
                     Iterator<Chunk> loadedChunks = event.world.getPersistentChunkIterable(((WorldServer)world).getPlayerChunkMap().getChunkIterator());
                     while (loadedChunks.hasNext()){
                         Chunk chunk = loadedChunks.next();

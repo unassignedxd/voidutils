@@ -3,10 +3,12 @@ package com.github.unassignedxd.voidutils.main.chunk.voidenergy;
 import com.github.unassignedxd.voidutils.api.voidenergy.IVoidChunk;
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.effects.IVoidEffect;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import org.lwjgl.Sys;
 
 import java.util.ArrayList;
 
@@ -30,32 +32,38 @@ public class VoidChunkStorage implements IVoidChunk {
         World world = this.chunk.getWorld();
 
         for(IVoidEffect effect : this.effects){
-            double x = this.chunk.getPos().getXStart() >> 4;
-            double z = this.chunk.getPos().getZStart() >> 4;
+            double x = this.chunk.getPos().getXStart() << 4;
+            double z = this.chunk.getPos().getZStart() << 4;
             int actY = world.getHeight((int)x,(int)z);
 
-            world.profiler.func_194340_a(() -> effect.getName().toString());
+            world.profiler.startSection(effect.getName().toString()+":update");
             effect.update(this, world, new BlockPos(x,actY,z));
             world.profiler.endSection();
         }
 
         if(this.needsSync){
-
+            PacketHandler.sendToAllTracking(world, new BlockPos(this.chunk.x << 4, 0, this.chunk.z << 4), new PacketVoidChunk(this.chunk.x, this.chunk.z, this.voidEnergy, this.dangerState));
             this.needsSync = false;
         }
     }
 
     @Override
     public void recieveVoid(int amount) {
-        if(voidEnergy + amount > CapabilityVoidEnergy.DEFAULT_CAPACITY) this.voidEnergy = CapabilityVoidEnergy.DEFAULT_CAPACITY;
+        if(voidEnergy + amount > CapabilityVoidEnergy.DEFAULT_CAPACITY) {
+            this.voidEnergy = CapabilityVoidEnergy.DEFAULT_CAPACITY;
+            amount=0;
+        }
 
         voidEnergy += amount;
-        onVoidChanged();
+        this.needsSync = true;
     }
 
     @Override
     public void extractVoid(int amount) {
-        if(voidEnergy - amount < 0) this.voidEnergy = 0;
+        if(voidEnergy - amount < 0) {
+            this.voidEnergy = 0;
+            amount=0;
+        }
 
         voidEnergy -= amount;
         this.needsSync = true;
@@ -88,7 +96,4 @@ public class VoidChunkStorage implements IVoidChunk {
         this.needsSync = true;
     }
 
-    private void onVoidChanged() {
-
-    }
 }
