@@ -1,6 +1,8 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
-import net.minecraft.item.Item;
+import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public interface IProxy {
@@ -9,7 +11,8 @@ public interface IProxy {
     void init(FMLPreInitializationEvent event);
     void postInit(FMLPreInitializationEvent event);
 
-    void registerRenderer(Item item);
+    void registerRenderer(ItemStack item, ModelResourceLocation resourceLocation);
+    void registerTESR(ITESRProvider provider);
 
     void scheduleTask(Runnable runnable);
 

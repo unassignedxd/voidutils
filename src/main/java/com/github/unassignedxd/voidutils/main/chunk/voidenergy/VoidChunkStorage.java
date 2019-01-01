@@ -2,15 +2,15 @@ package com.github.unassignedxd.voidutils.main.chunk.voidenergy;
 
 import com.github.unassignedxd.voidutils.api.voidenergy.IVoidChunk;
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.effects.IVoidEffect;
+import com.github.unassignedxd.voidutils.main.chunk.voidenergy.effects.VoidBedrockEffect;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.lwjgl.Sys;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class VoidChunkStorage implements IVoidChunk {
 
@@ -30,6 +30,17 @@ public class VoidChunkStorage implements IVoidChunk {
     @Override
     public void update() {
         World world = this.chunk.getWorld();
+
+        if(this.voidEnergy >= 7500) {
+            this.dangerState = true;
+        } else { this.dangerState = false; }
+
+        if(dangerState) {
+            IVoidEffect effect = new VoidBedrockEffect();
+            if(!effects.contains(effect)){
+                effects.add(effect);
+            }
+        }
 
         for(IVoidEffect effect : this.effects){
             double x = this.chunk.getPos().getXStart() << 4;
@@ -94,6 +105,15 @@ public class VoidChunkStorage implements IVoidChunk {
     public void setDangerState(boolean set) {
         this.dangerState = set;
         this.needsSync = true;
+    }
+
+    @Override
+    public ArrayList<IVoidEffect> getEffects() {
+        return this.effects;
+    }
+
+    public void removeEffect(IVoidEffect effect){
+        this.effects.remove(effect);
     }
 
 }

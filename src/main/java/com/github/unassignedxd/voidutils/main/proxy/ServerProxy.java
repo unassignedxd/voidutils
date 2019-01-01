@@ -1,29 +1,26 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
-import net.minecraft.item.Item;
+import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ServerProxy implements IProxy {
     @Override
-    public void preInit(FMLPreInitializationEvent event) {
-
-    }
+    public void preInit(FMLPreInitializationEvent event) { }
 
     @Override
-    public void init(FMLPreInitializationEvent event) {
-
-    }
+    public void init(FMLPreInitializationEvent event) { }
 
     @Override
-    public void postInit(FMLPreInitializationEvent event) {
-
-    }
+    public void postInit(FMLPreInitializationEvent event) { }
 
     @Override
-    public void registerRenderer(Item item) {
+    public void registerRenderer(ItemStack item, ModelResourceLocation resourceLocation) { }
 
-    }
+    @Override
+    public void registerTESR(ITESRProvider provider) { }
 
     @Override
     public void scheduleTask(Runnable runnable) {

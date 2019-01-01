@@ -1,10 +1,9 @@
 package com.github.unassignedxd.voidutils.main.init;
 
-import com.github.unassignedxd.voidutils.main.VoidUtils;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.github.unassignedxd.voidutils.main.blocks.BlockInfuser;
+import net.minecraft.block.Block;
 
-@GameRegistry.ObjectHolder(VoidUtils.MOD_ID)
 public class ModBlocks {
 
-
+    public static final Block INFUSER = new BlockInfuser();
 }
