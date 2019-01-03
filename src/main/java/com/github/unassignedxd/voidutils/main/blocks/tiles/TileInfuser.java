@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main.blocks.tiles;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -19,5 +20,22 @@ public class TileInfuser extends TileBase {
     @Override
     public IItemHandlerModifiable getItemHandler(EnumFacing facing) {
         return this.inv;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound, SaveType type) {
+        super.readFromNBT(compound, type);
+
+        if(type != SaveType.SAVE_BLOCK){
+            this.inv.deserializeNBT(compound.getCompoundTag("Items"));
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound, SaveType type) {
+        super.writeToNBT(compound, type);
+        if(type != SaveType.SAVE_BLOCK){
+            compound.setTag("Items", inv.serializeNBT());
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.github.unassignedxd.voidutils.main;
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.CapabilityVoidEnergy;
 import com.github.unassignedxd.voidutils.main.init.ModBlocks;
 import com.github.unassignedxd.voidutils.main.init.ModItems;
+import com.github.unassignedxd.voidutils.main.init.ModRecipes;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
@@ -55,6 +56,7 @@ public class VoidUtils {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         RegistryHandler.init(event);
+        ModRecipes.init();
     }
 
     @Mod.EventHandler

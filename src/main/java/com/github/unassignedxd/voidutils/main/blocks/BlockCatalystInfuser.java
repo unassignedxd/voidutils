@@ -1,7 +1,7 @@
 package com.github.unassignedxd.voidutils.main.blocks;
 
-import com.github.unassignedxd.voidutils.main.blocks.tiles.TileInfuser;
-import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderInfuser;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
 import net.minecraft.block.material.Material;
@@ -15,10 +15,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockInfuser extends BlockTileBase implements ITESRProvider {
+public class BlockCatalystInfuser extends BlockTileBase implements ITESRProvider {
 
-    public BlockInfuser(){
-        super("infuser", Material.IRON, TileInfuser.class, "infuser");
+    public BlockCatalystInfuser(){
+        super("catalystinfuser", Material.IRON, TileCatalystInfuser.class, "catalystinfuser");
     }
 
     @Override
@@ -43,6 +43,6 @@ public class BlockInfuser extends BlockTileBase implements ITESRProvider {
 
     @Override
     public Tuple<Class, TileEntitySpecialRenderer> getTESR() {
-        return new Tuple<>(TileInfuser.class, new RenderInfuser());
+        return new Tuple<>(TileCatalystInfuser.class, new RenderCatalystInfuser());
     }
 }
