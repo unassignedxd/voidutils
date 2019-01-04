@@ -1,25 +1,21 @@
 package com.github.unassignedxd.voidutils.main.blocks.tiles;
 
 import com.github.unassignedxd.voidutils.api.VoidUtilsAPI;
-import com.github.unassignedxd.voidutils.api.recipe.ResourceInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.recipe.CatalystInfusionRecipe;
 import com.github.unassignedxd.voidutils.main.util.EnergyStorageCustom;
-import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TileCatalystInfuser extends TileBase {
 
@@ -36,7 +32,7 @@ public class TileCatalystInfuser extends TileBase {
     public int processTime = 0;
     public final int maxProcessTime = 180; //9 seconds - todo 90s
 
-    private ResourceInfusionRecipe currentRecipe;
+    private CatalystInfusionRecipe currentRecipe;
 
     @Override
     public void update() {
@@ -98,10 +94,10 @@ public class TileCatalystInfuser extends TileBase {
         return nearInfusers;
     }
 
-    public ResourceInfusionRecipe getRecipeFromInput(){
+    public CatalystInfusionRecipe getRecipeFromInput(){
         ItemStack inputStack = this.inv.getStackInSlot(0);
         if(!inputStack.isEmpty()){
-            for(ResourceInfusionRecipe recipe : VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.values()){
+            for(CatalystInfusionRecipe recipe : VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.values()){
                 if(recipe.input.apply(inputStack)){
                     return recipe;
                 }
@@ -110,7 +106,7 @@ public class TileCatalystInfuser extends TileBase {
         return null;
     }
 
-    private boolean hasMatchingIngredients(ResourceInfusionRecipe recipe){
+    private boolean hasMatchingIngredients(CatalystInfusionRecipe recipe){
         ItemStack[] stacks = new ItemStack[8];
         ArrayList<TileInfuser> infusers = getInfusers();
         for(int i = 0; i < infusers.size(); i++){

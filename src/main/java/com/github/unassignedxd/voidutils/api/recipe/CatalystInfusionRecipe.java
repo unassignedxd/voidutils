@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResourceInfusionRecipe {
+public class CatalystInfusionRecipe {
 
     public final ResourceLocation name;
     public final Ingredient input;
@@ -24,7 +24,7 @@ public class ResourceInfusionRecipe {
     public final ItemStack output;
     public final int energyUse;
 
-    public ResourceInfusionRecipe(ResourceLocation name, Ingredient input,
+    public CatalystInfusionRecipe(ResourceLocation name, Ingredient input,
                                   Ingredient modifier1, Ingredient modifier2, Ingredient modifier3, Ingredient modifier4, Ingredient modifier5, Ingredient modifier6, Ingredient modifier7, Ingredient modifier8,
                                   ItemStack output, int energyUse) {
         this.name = name;
@@ -44,7 +44,7 @@ public class ResourceInfusionRecipe {
 
     }
 
-    public ResourceInfusionRecipe registerRecipe() {
+    public CatalystInfusionRecipe registerRecipe() {
         VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.put(this.name, this);
         return this;
     }
@@ -55,32 +55,14 @@ public class ResourceInfusionRecipe {
         if (!input.apply(in)) return false;
         List<Ingredient> matches = new ArrayList<>();
         ItemStack[] stacks = { infuser1, infuser2, infuser3, infuser4, infuser5, infuser6, infuser7, infuser8 };
+        Ingredient[] ingredients = { modifier1, modifier2, modifier3, modifier4, modifier5, modifier6, modifier7, modifier8 };
         boolean[] unused = { true, true, true, true, true, true, true, true };
         for (ItemStack s : stacks) {
-            if (unused[0] && modifier1.apply(s)) {
-                matches.add(modifier1);
-                unused[0] = false;
-            } else if (unused[1] && modifier2.apply(s)) {
-                matches.add(modifier2);
-                unused[1] = false;
-            } else if (unused[2] && modifier3.apply(s)) {
-                matches.add(modifier3);
-                unused[2] = false;
-            } else if (unused[3] && modifier4.apply(s)) {
-                matches.add(modifier4);
-                unused[3] = false;
-            } else if (unused[4] && modifier5.apply(s)) {
-                matches.add(modifier2);
-                unused[4] = false;
-            } else if (unused[5] && modifier6.apply(s)) {
-                matches.add(modifier3);
-                unused[5] = false;
-            } else if (unused[6] && modifier7.apply(s)) {
-                matches.add(modifier4);
-                unused[6] = false;
-            } else if (unused[7] && modifier8.apply(s)) {
-                matches.add(modifier4);
-                unused[7] = false;
+            for(int i = 0; i < ingredients.length; i++) {
+                if(unused[i] && ingredients[i].apply(s)){
+                    matches.add(ingredients[i]);
+                    unused[i] = false;
+                }
             }
         }
 

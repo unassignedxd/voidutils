@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "voidutils",
+  "name": "Void Utils",
+  "description": "A mod that adds dynamic interaction with the void, with ways to create power, items, and many other things.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["unassigned_"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

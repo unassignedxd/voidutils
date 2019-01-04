@@ -1,6 +1,6 @@
 package com.github.unassignedxd.voidutils.api;
 
-import com.github.unassignedxd.voidutils.api.recipe.ResourceInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.recipe.CatalystInfusionRecipe;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class VoidUtilsAPI {
     public static final String API_VERSION = "1";
 
     /**
-     * The list that is accessed through infusion crafting. Note: the ResourceInfusionRecipe#ingredients field must be less than 9 ingredients (8 or less).
+     * The list that is accessed through infusion crafting. Note: the CatalystInfusionRecipe#ingredients field must be less than 9 ingredients (8 or less).
      */
-    public static final Map<ResourceLocation, ResourceInfusionRecipe> RESOURCE_INFUSION_RECIPES = new HashMap<>();
+    public static final Map<ResourceLocation, CatalystInfusionRecipe> RESOURCE_INFUSION_RECIPES = new HashMap<>();
 }
