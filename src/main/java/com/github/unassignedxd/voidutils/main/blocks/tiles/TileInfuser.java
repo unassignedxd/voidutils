@@ -38,4 +38,5 @@ public class TileInfuser extends TileBase {
             compound.setTag("Items", inv.serializeNBT());
         }
     }
+
 }

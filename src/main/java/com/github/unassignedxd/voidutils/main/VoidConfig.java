@@ -7,7 +7,17 @@ public class VoidConfig {
     public static General general = new General();
 
     public static class General {
-        @Config.Comment("How often should VoidUtil's TEs send data to the Clients. Higher numbers will increase network traffic. Default: 10 ticks")
-        public int teUpdate = 10;
+        @Config.Comment("How often should VoidUtil's TEs send data to the Clients. Higher numbers will increase network traffic. Default: 5 ticks")
+        public int teUpdate = 5;
+
+        @Config.Comment({"As VoidUtils has an automated system to add all types of ingots in the game as acceptable catalyst types, you can blacklist them here if you do not want them to exist.",
+                            "The string you should put is the resource location of the item that you want blacklisted. To find this, use the in-game's advanced tooltip function."})
+        public String[] resourceCatalystBlacklist = {};
+
+        @Config.Comment({"Which types of Resource Catalyst should exist within VoidUtil's. These catalyst can be used to craft a crystal for the respective type, and duplicate them from there.",
+                            "The string you should put is the resource location of the item itself, to find this, use the in-game's advanced tooltip function."})
+        public String[] resourceCatalystTypes = {};
+
+
     }
 }

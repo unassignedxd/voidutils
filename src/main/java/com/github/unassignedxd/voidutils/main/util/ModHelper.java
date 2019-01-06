@@ -1,5 +1,7 @@
 package com.github.unassignedxd.voidutils.main.util;
 
+import com.github.unassignedxd.voidutils.main.VoidConfig;
+import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -8,19 +10,23 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * This class will hold many helper methods that are called more than once, or are just helpful in development.
  */
 public final class ModHelper {
+
+    public static final ResourceLocation GUI_INVENTORY_LOCATION = new ResourceLocation(VoidUtils.MOD_ID, "textures/gui/gui_inventory.png");
 
     /**
      * Renders an item in the world at Gl translated positions
@@ -49,27 +55,29 @@ public final class ModHelper {
      * @param slotID the slot where the interaction is happening
      * @return whether the interaction was sucessful or not.
      */
-    public static boolean putStackInTile(EntityPlayer player, EnumHand hand, BlockPos pos, int slotID){
+    public static boolean putStackInTile(EntityPlayer player, EnumHand hand, BlockPos pos, int slotID) {
         TileEntity tile = player.world.getTileEntity(pos);
-        World world = player.world;
-        if(tile instanceof TileBase){
-            IItemHandlerModifiable itemHandler = ((TileBase)tile).getItemHandler(null);
-            if(itemHandler != null){
+        if (tile instanceof TileBase) {
+            IItemHandlerModifiable handler = ((TileBase) tile).getItemHandler(null);
+            if (handler != null) {
                 ItemStack handStack = player.getHeldItem(hand);
-                if(!handStack.isEmpty()){
-                    ItemStack check = itemHandler.insertItem(slotID, handStack, player.world.isRemote);
-                    if(!ItemStack.areItemsEqual(check, handStack)){ //checks to see if the player already has the stack on them, and then some.
-                        world.playSound(player, pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5, SoundEvents.ENTITY_ITEMFRAME_ADD_ITEM, SoundCategory.PLAYERS, .75f, 1f);
-                        if(!world.isRemote) player.setHeldItem(hand, check);
+                ItemStack mergeStack = handler.getStackInSlot(slotID);
+                if (mergeStack.isEmpty()) {
+                    if (!handStack.isEmpty()) {
+                        player.world.playSound(player, tile.getPos(), SoundEvents.ENTITY_ITEMFRAME_PLACE, SoundCategory.BLOCKS, .5f, 1f);
+                        if (!player.world.isRemote) {
+                            ItemStack setStack = handStack.copy();
+                            setStack.setCount(1);
+                            handler.insertItem(slotID, setStack, false);
+                            handStack.shrink(1);
+                        }
                         return true;
                     }
-                }
-                if(!itemHandler.getStackInSlot(slotID).isEmpty()){
-                    world.playSound(player, pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5, SoundEvents.ENTITY_ITEMFRAME_REMOVE_ITEM, SoundCategory.PLAYERS, .75f, 1f);
-
-                    if(!world.isRemote) {
-                        player.addItemStackToInventory(itemHandler.getStackInSlot(slotID));
-                        itemHandler.setStackInSlot(slotID, ItemStack.EMPTY);
+                }else {
+                    player.world.playSound(player, tile.getPos(), SoundEvents.ENTITY_ITEMFRAME_REMOVE_ITEM, SoundCategory.BLOCKS, .5f, 1f);
+                    if (!player.world.isRemote) {
+                        player.inventory.addItemStackToInventory(mergeStack.copy());
+                        mergeStack.shrink(1);
                     }
                     return true;
                 }
@@ -77,4 +85,60 @@ public final class ModHelper {
         }
         return false;
     }
+
+    /*
+     * @return The catalyst types that exist.
+     */
+    public static NonNullList<ItemStack> getAcceptableCatalystTypes() {
+        NonNullList<ItemStack> returnList = NonNullList.create();
+
+        for(String oreName : OreDictionary.getOreNames()) {
+            if(oreName.contains("ingot")){
+                for(ItemStack ingot : OreDictionary.getOres(oreName)){
+                    for(String idBlack : VoidConfig.general.resourceCatalystBlacklist){
+                        if(idBlack != ingot.getItem().getRegistryName().toString()){
+                            returnList.add(ingot);
+                        }
+                    }
+                }
+            }
+        }
+        for(String stringLoc : VoidConfig.general.resourceCatalystTypes){
+            ResourceLocation location = new ResourceLocation(stringLoc);
+            if(ForgeRegistries.ITEMS.containsKey(location)){
+                returnList.add(new ItemStack(ForgeRegistries.ITEMS.getValue(location)));
+            }else if(ForgeRegistries.BLOCKS.containsKey(location)){
+                returnList.add(new ItemStack(ForgeRegistries.BLOCKS.getValue(location)));
+            }
+        }
+
+        return returnList;
+    }
+
+    /**
+     * Gets the NBTTagCompound from
+     * @param stack to ge the compound from
+     * @return the data attached to the compound.
+     */
+    public static NBTTagCompound getData(ItemStack stack){
+        NBTTagCompound compound = stack.getTagCompound();
+        if(compound == null) return new NBTTagCompound();
+
+        return compound;
+    }
+
+    /**
+     * Clears keys from an ItemStack
+     * @param stack the stack to remove the data from
+     * @param keys the key names themselves.
+     */
+    public static void clearNBT(ItemStack stack, String... keys){
+        if(stack.hasTagCompound()){
+            NBTTagCompound compound = stack.getTagCompound();
+            for(String key : keys){
+                compound.removeTag(key);
+            }
+        }
+    }
+
 }

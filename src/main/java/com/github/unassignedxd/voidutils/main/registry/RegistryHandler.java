@@ -24,10 +24,9 @@ public class RegistryHandler {
     private static void registerItem(Item item, String name, CreativeTabs tab){
         item.setTranslationKey(VoidUtils.MOD_ID + "." + name);
         item.setRegistryName(VoidUtils.MOD_ID, name);
+        item.setCreativeTab(tab);
 
         ForgeRegistries.ITEMS.register(item);
-
-        item.setCreativeTab(tab);
     }
 
     private static void registerBlock(Block block, String name, ItemBlock itemBlock, CreativeTabs tab){

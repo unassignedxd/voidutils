@@ -1,7 +1,9 @@
 package com.github.unassignedxd.voidutils.main.blocks;
 
+import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderCatalystInfuser;
+import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
 import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
 import net.minecraft.block.material.Material;
@@ -18,12 +20,20 @@ import net.minecraft.world.World;
 public class BlockCatalystInfuser extends BlockTileBase implements ITESRProvider {
 
     public BlockCatalystInfuser(){
-        super("catalystinfuser", Material.IRON, TileCatalystInfuser.class, "catalystinfuser");
+        super("catalyst_infuser", Material.IRON, TileCatalystInfuser.class, "catalyst_infuser");
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return ModHelper.putStackInTile(playerIn, hand, pos, 0);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!world.isRemote){
+            TileCatalystInfuser machine = (TileCatalystInfuser)world.getTileEntity(pos);
+            if(machine != null && (!player.isSneaking() && player.getHeldItem(hand).isEmpty())){
+                player.openGui(VoidUtils.instance, GuiHandler.GuiTypes.CRYSTAL_INFUSER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+                return true;
+            }
+        }
+        ModHelper.putStackInTile(player, hand, pos, 0);
+        return true;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.github.unassignedxd.voidutils.main.chunk.voidenergy.CapabilityVoidEne
 import com.github.unassignedxd.voidutils.main.init.ModBlocks;
 import com.github.unassignedxd.voidutils.main.init.ModItems;
 import com.github.unassignedxd.voidutils.main.init.ModRecipes;
+import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -57,10 +59,17 @@ public class VoidUtils {
     public void init(FMLInitializationEvent event) {
         RegistryHandler.init(event);
         ModRecipes.init();
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         RegistryHandler.postInit(event);
     }
+
+    /**
+     * Resource catalyst are for duping items
+     * Void Crystals are used in infusion, along with modifiers to create a Void Crystal Catalyst
+     */
 }

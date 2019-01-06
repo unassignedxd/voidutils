@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ItemBase extends Item implements IModItem, ICreativeItem, IModelProvider {
 
-    private final String name;
+    public final String name;
 
     public ItemBase(String name){
         this.name = name;

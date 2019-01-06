@@ -1,8 +1,13 @@
 package com.github.unassignedxd.voidutils.main.blocks.tiles;
 
 import com.github.unassignedxd.voidutils.api.VoidUtilsAPI;
-import com.github.unassignedxd.voidutils.api.recipe.CatalystInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.infusion.modifier.IVoidModifier;
+import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystInfusionRecipe;
+import com.github.unassignedxd.voidutils.main.init.ModItems;
 import com.github.unassignedxd.voidutils.main.util.EnergyStorageCustom;
+import com.github.unassignedxd.voidutils.main.util.infusion.ResourceCatalyst;
+import com.github.unassignedxd.voidutils.main.util.infusion.VoidInfusion;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +22,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
-public class TileCatalystInfuser extends TileBase {
+public class TileCatalystInfuser extends TileBase implements IButtonReactor {
 
     public final ItemStackHandler inv = new ItemStackHandlerCustom(1, this, true){
         @Override
@@ -31,52 +36,109 @@ public class TileCatalystInfuser extends TileBase {
     public int customCapacity = 0;
     public int processTime = 0;
     public final int maxProcessTime = 180; //9 seconds - todo 90s
+    public boolean doWork = false;
 
-    private CatalystInfusionRecipe currentRecipe;
+    private ResourceCatalystInfusionRecipe currentRecipe;
+    private boolean hasEnergy = false;
 
     @Override
     public void update() {
         super.update();
-        if(!this.world.isRemote){
-
-            if(currentRecipe == null){
-                this.currentRecipe = getRecipeFromInput();
-                this.resetMachine();
-            } else if(getInfusers() != null){
-                int energyNeed = currentRecipe.energyUse;
-                this.energyStorage.setCapacity(energyNeed);
-                if(hasMatchingIngredients(currentRecipe) && energyStorage.atCapacity()){
-                    float energyPerTick = (float)energyNeed / (float)processTime;
-                    this.processTime++;
-
-                    boolean done = this.processTime >= this.maxProcessTime;
-                    this.energyStorage.extractEnergy((int)energyPerTick, false);
-
-                    for(TileInfuser infuser : getInfusers()){
-                        if(done){
-                            infuser.getStackInSlot().shrink(1);
-                            infuser.markDirty();
-                        }
-                    }
-
-                    if(this.processTime % 5 == 0 && this.world instanceof WorldServer) {
-                        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 10, 0, 0, 0, 0.1D);
-                    }
-
-                    if(done){
-                        this.inv.setStackInSlot(0, currentRecipe.output.copy());
-                        this.markDirty();
-                        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.END_ROD, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 100, 0, 0, 0, 0.25D);
+        if(!this.world.isRemote) {
+            if (this.doWork || this.redstoneActive > 0) {
+                if (isResourceInfusion()) {
+                    if (currentRecipe == null) {
+                        this.currentRecipe = getRecipeFromInput();
                         this.resetMachine();
+                    } else if (getInfusers().size() == 8) {
+                        int energyNeed = currentRecipe.energyUse;
+                        this.energyStorage.setCapacity(energyNeed);
+                        if (hasMatchingIngredients(currentRecipe) && (this.energyStorage.atCapacity() || hasEnergy)) {
+                            hasEnergy = true;
+                            float energyPerTick = (float) energyNeed / (float) processTime;
+                            this.processTime++;
+
+                            boolean done = this.processTime >= this.maxProcessTime;
+                            this.energyStorage.extractEnergy((int) energyPerTick, false);
+
+                            for (TileInfuser infuser : getInfusers()) {
+                                if (done) {
+                                    infuser.getStackInSlot().shrink(1);
+                                    infuser.markDirty();
+                                }
+                            }
+
+                            if (this.processTime % 5 == 0 && this.world instanceof WorldServer) {
+                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 10, 0, 0, 0, 0.1D);
+                            }
+
+                            if (done) {
+                                ResourceCatalyst infusion = currentRecipe.output;
+                                ItemStack stack = new ItemStack(ModItems.RESOURCE_CATALYST);
+                                NBTTagCompound compound = new NBTTagCompound();
+                                infusion.getResourceDupe().writeToNBT(compound);
+                                compound.setDouble("PowerUse", infusion.getPowerUseAmount());
+                                compound.setDouble("DepletionRateAmount", infusion.getDepletionRate());
+                                stack.setTagCompound(compound);
+                                this.inv.setStackInSlot(0, stack);
+                                this.markDirty();
+                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.END_ROD, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 100, 0, 0, 0, 0.25D);
+                                this.resetMachine();
+                            }
+
+                        }
+                    } else {
+                        resetMachine();
                     }
+                } else {
+                    VoidInfusion infusion = this.getInfusionFromStands();
+                    if (infusion != null) {
+                        int energyNeed = infusion.getEnergyUse();
+                        this.energyStorage.setCapacity(energyNeed);
+                        if (this.energyStorage.atCapacity() || this.hasEnergy) {
+                            this.hasEnergy = true;
+                            float energyPerTick = (float) energyNeed / (float) processTime;
+                            this.processTime++;
 
+                            boolean done = this.processTime >= this.maxProcessTime;
+                            this.energyStorage.extractEnergy((int) energyPerTick, false);
+
+                            for (TileInfuser infuser : getInfusers()) {
+                                if (done) {
+                                    infuser.getStackInSlot().shrink(1);
+                                    infuser.markDirty();
+                                }
+                            }
+
+                            if (this.processTime % 5 == 0 && this.world instanceof WorldServer) {
+                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 10, 0, 0, 0, 0.1D);
+                            }
+
+                            if (done) {
+                                ItemStack stack = new ItemStack(ModItems.VOID_CATALYST);
+                                NBTTagCompound compound = new NBTTagCompound();
+                                compound.setDouble("VoidAmount", infusion.getVoidAmount());
+                                compound.setDouble("PowerAmount", infusion.getPowerAmount());
+                                compound.setDouble("DepletionRateAmount", infusion.getDepletionAmount());
+                                stack.setTagCompound(compound);
+                                this.inv.setStackInSlot(0, stack);
+                                this.markDirty();
+                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.END_ROD, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 100, 0, 0, 0, 0.25D);
+                                this.resetMachine();
+                            }
+                        }
+                    } else {
+                        resetMachine();
+                    }
                 }
-            } else {
-                resetMachine();
             }
-
         }
     }
+
+    public boolean isResourceInfusion() {
+        if(inv.getStackInSlot(0).getItem() == ModItems.VOID_UNINFUSED_CATALYST) { return false; }
+        return true;
+     }
 
     public ArrayList<TileInfuser> getInfusers() {
         ArrayList<TileInfuser> nearInfusers = new ArrayList<>();
@@ -88,16 +150,16 @@ public class TileCatalystInfuser extends TileBase {
             if(horzTile instanceof TileInfuser && diagTile instanceof TileInfuser) {
                 nearInfusers.add((TileInfuser)horzTile);
                 nearInfusers.add((TileInfuser)diagTile);
-            } else return null;
+            }
         }
 
         return nearInfusers;
     }
 
-    public CatalystInfusionRecipe getRecipeFromInput(){
+    public ResourceCatalystInfusionRecipe getRecipeFromInput(){
         ItemStack inputStack = this.inv.getStackInSlot(0);
         if(!inputStack.isEmpty()){
-            for(CatalystInfusionRecipe recipe : VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.values()){
+            for(ResourceCatalystInfusionRecipe recipe : VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.values()){
                 if(recipe.input.apply(inputStack)){
                     return recipe;
                 }
@@ -106,7 +168,7 @@ public class TileCatalystInfuser extends TileBase {
         return null;
     }
 
-    private boolean hasMatchingIngredients(CatalystInfusionRecipe recipe){
+    private boolean hasMatchingIngredients(ResourceCatalystInfusionRecipe recipe){
         ItemStack[] stacks = new ItemStack[8];
         ArrayList<TileInfuser> infusers = getInfusers();
         for(int i = 0; i < infusers.size(); i++){
@@ -115,9 +177,32 @@ public class TileCatalystInfuser extends TileBase {
         return recipe.matches(this.inv.getStackInSlot(0), stacks[0], stacks[1], stacks[2], stacks[3], stacks[4], stacks[5], stacks[6], stacks[7]);
     }
 
+    private VoidInfusion getInfusionFromStands(){
+        ArrayList<ItemStack> items = new ArrayList<>();
+        for(TileInfuser infuser : getInfusers()){
+            items.add(infuser.getStackInSlot());
+        }
+        if(items.size() < 2) return null;
+
+        ArrayList<IVoidModifier> modifiers = new ArrayList<>();
+        for(ItemStack item : items){
+            for(IVoidModifier modifier : VoidUtilsAPI.VOID_INFUSION_MODIFIERS.values()){
+                if(ItemStack.areItemsEqual(modifier.getItem(), item)) { modifiers.add(modifier); }
+            }
+        }
+
+        IVoidModifier[] mods = new IVoidModifier[modifiers.size()];
+        for(int i = 0; i < modifiers.size(); i++)
+            mods[i] = modifiers.get(i);
+
+        return new VoidInfusion(mods);
+    }
+
     private void resetMachine() {
         this.processTime=0;
         this.customCapacity=0;
+        this.doWork=false;
+        this.hasEnergy = false;
         this.energyStorage.setCapacity(customCapacity);
     }
 
@@ -138,6 +223,7 @@ public class TileCatalystInfuser extends TileBase {
         if(type != SaveType.SAVE_BLOCK){
             this.inv.deserializeNBT(compound);
             this.customCapacity = compound.getInteger("CustomCapacity");
+            this.processTime = compound.getInteger("ProcessTime");
         }
     }
 
@@ -148,6 +234,12 @@ public class TileCatalystInfuser extends TileBase {
         if(type != SaveType.SAVE_BLOCK){
             this.inv.serializeNBT();
             compound.setInteger("CustomCapacity", this.customCapacity);
+            compound.setInteger("ProcessTime", this.processTime);
         }
+    }
+
+    @Override
+    public void onButtonPressed(int buttonID, EntityPlayer player) {
+        if(buttonID == 0) this.doWork = !this.doWork;
     }
 }
