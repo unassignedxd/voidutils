@@ -2,6 +2,8 @@ package com.github.unassignedxd.voidutils.main.network;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketButtonToTile;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketParticleStream;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketParticles;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,7 +22,11 @@ public class PacketHandler {
 
     public static void init(){
         network = new SimpleNetworkWrapper(VoidUtils.MOD_ID);
+
         registerPacket(PacketVoidChunk.Handler.class, PacketVoidChunk.class, Side.CLIENT);
+        registerPacket(PacketParticles.Handler.class, PacketParticles.class, Side.CLIENT);
+        registerPacket(PacketParticleStream.Handler.class, PacketParticleStream.class, Side.CLIENT);
+
         registerPacket(PacketButtonToTile.Handler.class, PacketButtonToTile.class, Side.SERVER);
     }
 

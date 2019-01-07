@@ -19,7 +19,7 @@ public class ModRecipes {
         new ResourceCatalystInfusionRecipe(new ResourceLocation(VoidUtils.MOD_ID, "resourcecrystal_IRON"), convert(new ItemStack(Blocks.IRON_BLOCK)),
                convert(new ItemStack(Items.IRON_INGOT)), convert(new ItemStack(Items.IRON_INGOT)), convert(new ItemStack(Items.IRON_INGOT)),
                                 convert(new ItemStack(Items.IRON_INGOT)), convert(new ItemStack(Items.NETHER_STAR)), convert(new ItemStack(Items.NETHER_STAR)), convert(ItemStack.EMPTY), convert(ItemStack.EMPTY),
-                new ResourceCatalyst(new ItemStack(Items.IRON_INGOT), 500, 0.01), 50000).registerRecipe();
+                new ResourceCatalyst(new ItemStack(Items.IRON_INGOT), 500, 0.01), 50000, 0).registerRecipe();
 
         /**
          * Void Infusion Modifiers

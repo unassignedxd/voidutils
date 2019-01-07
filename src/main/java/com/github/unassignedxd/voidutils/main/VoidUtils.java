@@ -8,8 +8,10 @@ import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
-import com.github.unassignedxd.voidutils.main.util.CreativeTabVoidUtils;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -41,7 +43,12 @@ public class VoidUtils {
     public static IProxy proxy;
 
     public static Logger logger;
-    public static final CreativeTabs CREATIVE_TAB = new CreativeTabVoidUtils(new ResourceLocation(MOD_ID, "creative_tab").toString());
+    public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MOD_ID) {
+        @Override
+        public ItemStack createIcon() {
+            return new ItemStack(Blocks.BEDROCK); //todo icon
+        }
+    };
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -53,19 +60,23 @@ public class VoidUtils {
         new ModItems();
 
         RegistryHandler.preInit(event);
+        proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        RegistryHandler.init(event);
         ModRecipes.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+        RegistryHandler.init(event);
+        proxy.init(event);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         RegistryHandler.postInit(event);
+        proxy.postInit(event);
     }
 
     /**

@@ -21,6 +21,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.vecmath.Vector3f;
+
 /**
  * This class will hold many helper methods that are called more than once, or are just helpful in development.
  */
@@ -138,6 +140,23 @@ public final class ModHelper {
             for(String key : keys){
                 compound.removeTag(key);
             }
+        }
+    }
+
+    public static void spawnInfuseParticle(double posX, double posY, double posZ, double motionX, double motionY, double motionZ, int color, float alpha, float scale,
+                                    int maxAge, float gravity, boolean collision, boolean fade){
+        VoidUtils.proxy.spawnInfusionParticle(posX, posY, posZ, motionX, motionY, motionZ, color, alpha, scale, maxAge, gravity, collision, fade);
+    }
+
+    public static void spawnInfuseParticleStream(float startX, float startY, float startZ, float endX, float endY, float endZ, float speed, int color, float alpha, float scale){
+        Vector3f vector = new Vector3f(endX-startX, endY-startY, endZ-startZ);
+        if(vector.length() > 0) {
+            int maxAge = (int)(vector.length() / speed);
+            vector.normalize();
+
+            spawnInfuseParticle(startX, startY, startZ,
+                    vector.x * speed, vector.y * speed, vector.z * speed,
+                    color, alpha, scale, maxAge, 0f, false, false);
         }
     }
 

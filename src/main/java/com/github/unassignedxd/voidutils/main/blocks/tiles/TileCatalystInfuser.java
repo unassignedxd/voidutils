@@ -4,6 +4,8 @@ import com.github.unassignedxd.voidutils.api.VoidUtilsAPI;
 import com.github.unassignedxd.voidutils.api.infusion.modifier.IVoidModifier;
 import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystInfusionRecipe;
 import com.github.unassignedxd.voidutils.main.init.ModItems;
+import com.github.unassignedxd.voidutils.main.network.PacketHandler;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketParticleStream;
 import com.github.unassignedxd.voidutils.main.util.EnergyStorageCustom;
 import com.github.unassignedxd.voidutils.main.util.infusion.ResourceCatalyst;
 import com.github.unassignedxd.voidutils.main.util.infusion.VoidInfusion;
@@ -62,14 +64,15 @@ public class TileCatalystInfuser extends TileBase implements IButtonReactor {
                             this.energyStorage.extractEnergy((int) energyPerTick, false);
 
                             for (TileInfuser infuser : getInfusers()) {
+                                PacketHandler.sendToAllTracking(this.world, this.getPos(), new PacketParticleStream(
+                                        infuser.getPos().getX(), infuser.getPos().getY(), infuser.getPos().getZ(),
+                                        this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                                        this.world.rand.nextFloat() * .07f + .07f, currentRecipe.particleColor, 1, 1
+                                ));
                                 if (done) {
                                     infuser.getStackInSlot().shrink(1);
                                     infuser.markDirty();
                                 }
-                            }
-
-                            if (this.processTime % 5 == 0 && this.world instanceof WorldServer) {
-                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 10, 0, 0, 0, 0.1D);
                             }
 
                             if (done) {
@@ -104,14 +107,15 @@ public class TileCatalystInfuser extends TileBase implements IButtonReactor {
                             this.energyStorage.extractEnergy((int) energyPerTick, false);
 
                             for (TileInfuser infuser : getInfusers()) {
+                                    PacketHandler.sendToAllTracking(this.world, this.getPos(), new PacketParticleStream(
+                                            infuser.getPos().getX(), infuser.getPos().getY(), infuser.getPos().getZ(),
+                                            this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                                            this.world.rand.nextFloat() * .07f + .07f, currentRecipe.particleColor, 1, 1
+                                    ));
                                 if (done) {
                                     infuser.getStackInSlot().shrink(1);
                                     infuser.markDirty();
                                 }
-                            }
-
-                            if (this.processTime % 5 == 0 && this.world instanceof WorldServer) {
-                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, false, this.pos.getX() + 0.5, this.pos.getY() + 1.1, this.pos.getZ() + 0.5, 10, 0, 0, 0, 0.1D);
                             }
 
                             if (done) {
