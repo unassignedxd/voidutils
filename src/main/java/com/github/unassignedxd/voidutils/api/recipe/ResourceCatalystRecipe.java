@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResourceCatalystInfusionRecipe {
+public class ResourceCatalystRecipe {
 
     public final ResourceLocation name;
     public final Ingredient input;
@@ -26,9 +26,9 @@ public class ResourceCatalystInfusionRecipe {
     public final int energyUse;
     public final int particleColor;
 
-    public ResourceCatalystInfusionRecipe(ResourceLocation name, Ingredient input,
-                                          Ingredient modifier1, Ingredient modifier2, Ingredient modifier3, Ingredient modifier4, Ingredient modifier5, Ingredient modifier6, Ingredient modifier7, Ingredient modifier8,
-                                          ResourceCatalyst output, int energyUse, int particleColor) {
+    public ResourceCatalystRecipe(ResourceLocation name, Ingredient input,
+                                  Ingredient modifier1, Ingredient modifier2, Ingredient modifier3, Ingredient modifier4, Ingredient modifier5, Ingredient modifier6, Ingredient modifier7, Ingredient modifier8,
+                                  ResourceCatalyst output, int energyUse, int particleColor) {
         this.name = name;
         this.input = input;
 
@@ -46,7 +46,7 @@ public class ResourceCatalystInfusionRecipe {
         this.particleColor = particleColor;
     }
 
-    public ResourceCatalystInfusionRecipe registerRecipe() {
+    public ResourceCatalystRecipe registerRecipe() {
         VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.put(this.name, this);
         return this;
     }

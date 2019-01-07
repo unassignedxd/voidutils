@@ -1,7 +1,6 @@
 package com.github.unassignedxd.voidutils.main.blocks;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
 import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;

@@ -1,7 +1,7 @@
 package com.github.unassignedxd.voidutils.main.compat.jei;
 
 import com.github.unassignedxd.voidutils.api.VoidUtilsAPI;
-import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystRecipe;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.compat.jei.infusion.CatalystInfuserCategory;
 import com.github.unassignedxd.voidutils.main.compat.jei.infusion.CatalystInfuserWrapper;
@@ -28,7 +28,7 @@ public class JEIVoidUtilsPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        registry.handleRecipes(ResourceCatalystInfusionRecipe.class, CatalystInfuserWrapper::new, CATALYST_INFUSION);
+        registry.handleRecipes(ResourceCatalystRecipe.class, CatalystInfuserWrapper::new, CATALYST_INFUSION);
 
         registry.addRecipes(VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.values(), CATALYST_INFUSION);
 

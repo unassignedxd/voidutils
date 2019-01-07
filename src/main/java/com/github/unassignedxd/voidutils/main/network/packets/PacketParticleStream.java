@@ -50,7 +50,7 @@ public class PacketParticleStream implements IMessage {
         this.speed = buf.readFloat();
         this.color = buf.readInt();
         this.alpha = buf.readFloat();
-//        this.scale = buf.readFloat();
+        this.scale = buf.readFloat();
     }
 
     @Override

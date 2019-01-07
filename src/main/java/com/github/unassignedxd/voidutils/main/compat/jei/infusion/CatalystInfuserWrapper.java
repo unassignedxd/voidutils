@@ -1,6 +1,6 @@
 package com.github.unassignedxd.voidutils.main.compat.jei.infusion;
 
-import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystRecipe;
 import com.google.common.collect.ImmutableList;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -8,9 +8,9 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 public class CatalystInfuserWrapper implements IRecipeWrapper {
-    public final ResourceCatalystInfusionRecipe recipe;
+    public final ResourceCatalystRecipe recipe;
 
-    public CatalystInfuserWrapper(ResourceCatalystInfusionRecipe recipe){
+    public CatalystInfuserWrapper(ResourceCatalystRecipe recipe){
         this.recipe = recipe;
     }
 

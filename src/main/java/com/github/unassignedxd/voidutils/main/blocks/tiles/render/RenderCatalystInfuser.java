@@ -1,6 +1,5 @@
 package com.github.unassignedxd.voidutils.main.blocks.tiles.render;
 
-import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

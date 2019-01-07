@@ -1,12 +1,10 @@
 package com.github.unassignedxd.voidutils.main.inventory.container;
 
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
-import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerCatalystInfuser extends Container {
 

@@ -32,6 +32,7 @@ public class RegistryHandler {
     private static void registerBlock(Block block, String name, ItemBlock itemBlock, CreativeTabs tab){
         block.setTranslationKey(VoidUtils.MOD_ID + "." + name);
         block.setRegistryName(VoidUtils.MOD_ID, name);
+        block.setCreativeTab(tab);
 
         ForgeRegistries.BLOCKS.register(block);
 
@@ -40,7 +41,6 @@ public class RegistryHandler {
             ForgeRegistries.ITEMS.register(itemBlock);
         }
 
-        block.setCreativeTab(tab);
     }
 
     private static CreativeTabs getCreativeTabFromItem(IModItem item){

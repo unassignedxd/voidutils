@@ -1,6 +1,6 @@
 package com.github.unassignedxd.voidutils.main.compat.jei.infusion;
 
-import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystInfusionRecipe;
+import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystRecipe;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.compat.jei.JEIVoidUtilsPlugin;
 import com.github.unassignedxd.voidutils.main.init.ModBlocks;
@@ -47,7 +47,7 @@ public class CatalystInfuserCategory implements IRecipeCategory<CatalystInfuserW
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, CatalystInfuserWrapper catalystInfuserWrapper, IIngredients iIngredients) {
         IGuiItemStackGroup iGroup = recipeLayout.getItemStacks();
-        ResourceCatalystInfusionRecipe recipe = catalystInfuserWrapper.recipe;
+        ResourceCatalystRecipe recipe = catalystInfuserWrapper.recipe;
         iGroup.init(0, true, 65, 56);
         iGroup.set(0, Arrays.asList(recipe.input.getMatchingStacks()));
 

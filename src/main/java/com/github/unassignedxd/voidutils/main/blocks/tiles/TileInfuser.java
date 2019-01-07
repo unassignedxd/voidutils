@@ -15,6 +15,8 @@ public class TileInfuser extends TileBase {
         }
     };
 
+    public boolean hasItemStack() { return this.inv.getStackInSlot(0) != ItemStack.EMPTY; }
+
     public ItemStack getStackInSlot() { return this.inv.getStackInSlot(0); }
 
     @Override

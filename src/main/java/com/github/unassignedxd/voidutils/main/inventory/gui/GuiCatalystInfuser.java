@@ -2,7 +2,6 @@ package com.github.unassignedxd.voidutils.main.inventory.gui;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
-import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.inventory.container.ContainerCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketButtonToTile;
@@ -12,7 +11,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
 
 import java.io.IOException;
 
