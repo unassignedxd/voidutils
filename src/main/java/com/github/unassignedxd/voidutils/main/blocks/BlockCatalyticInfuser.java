@@ -1,7 +1,8 @@
 package com.github.unassignedxd.voidutils.main.blocks;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderCatalystInfuser;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalyticInfuser;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.render.RenderCatalyticInfuser;
 import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
 import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
@@ -16,16 +17,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockCatalystInfuser extends BlockTileBase implements ITESRProvider {
+public class BlockCatalyticInfuser extends BlockTileBase implements ITESRProvider {
 
-    public BlockCatalystInfuser(){
-        super("catalyst_infuser", Material.IRON, TileCatalystInfuser.class, "catalyst_infuser");
+    public BlockCatalyticInfuser(){
+        super("catalyst_infuser", Material.IRON, TileCatalyticInfuser.class, "catalyst_infuser");
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!world.isRemote){
-            TileCatalystInfuser machine = (TileCatalystInfuser)world.getTileEntity(pos);
+            TileCatalyticInfuser machine = (TileCatalyticInfuser)world.getTileEntity(pos);
             if(machine != null && (!player.isSneaking() && player.getHeldItem(hand).isEmpty())){
                 player.openGui(VoidUtils.instance, GuiHandler.GuiTypes.CRYSTAL_INFUSER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
                 return true;
@@ -52,6 +53,6 @@ public class BlockCatalystInfuser extends BlockTileBase implements ITESRProvider
 
     @Override
     public Tuple<Class, TileEntitySpecialRenderer> getTESR() {
-        return new Tuple<>(TileCatalystInfuser.class, new RenderCatalystInfuser());
+        return new Tuple<>(TileCatalyticInfuser.class, new RenderCatalyticInfuser());
     }
 }

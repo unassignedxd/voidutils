@@ -10,9 +10,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Random;
 
 public class RenderInfuser extends TileEntitySpecialRenderer<TileInfuser> {
-
-    private final Random rand = new Random();
-
+    
     @Override
     public void render(TileInfuser te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         ItemStack stack = te.getStackInSlot();

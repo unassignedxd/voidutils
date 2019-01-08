@@ -1,5 +1,6 @@
 package com.github.unassignedxd.voidutils.main.blocks.tiles.render;
 
+import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalyticInfuser;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,12 +9,10 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Random;
 
-public class RenderCatalystInfuser extends TileEntitySpecialRenderer<TileCatalystInfuser> {
-
-    private final Random rand = new Random();
+public class RenderCatalyticInfuser extends TileEntitySpecialRenderer<TileCatalyticInfuser> {
 
     @Override
-    public void render(TileCatalystInfuser te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileCatalyticInfuser te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         ItemStack stack = te.inv.getStackInSlot(0);
         if(!stack.isEmpty()){
             GlStateManager.pushMatrix();

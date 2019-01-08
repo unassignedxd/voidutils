@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main.inventory.container;
 
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalyticInfuser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -8,10 +9,10 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerCatalystInfuser extends Container {
 
-    private final TileCatalystInfuser machine;
+    private final TileCatalyticInfuser machine;
 
     public ContainerCatalystInfuser(InventoryPlayer inventory, TileBase tile) {
-        this.machine = (TileCatalystInfuser)tile;
+        this.machine = (TileCatalyticInfuser)tile;
 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 9; j++){

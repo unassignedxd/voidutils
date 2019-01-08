@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main.chunk.voidenergy;
 
 import com.github.unassignedxd.voidutils.api.voidenergy.IVoidChunk;
+import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.effects.IVoidEffect;
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.effects.VoidBedrockEffect;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
@@ -30,15 +31,29 @@ public class VoidChunkStorage implements IVoidChunk {
     public void update() {
         World world = this.chunk.getWorld();
 
-        if(this.voidEnergy >= 7500) {
-            this.dangerState = true;
-        } else { this.dangerState = false; }
-
-        if(dangerState) {
-            IVoidEffect effect = new VoidBedrockEffect();
-            if(!effects.contains(effect)){
-                effects.add(effect);
+        if(this.voidEnergy >= 7500) { //todo more events and combonation of events depending on odds & void amount.
+            int switcher = world.rand.nextInt(5);
+            switch(switcher){
+                case 0:
+                    effects.add(new VoidBedrockEffect());
+                    break;
+                case 1:
+                    effects.add(new VoidBedrockEffect());
+                    break;
+                case 2:
+                    effects.add(new VoidBedrockEffect());
+                    break;
+                case 3:
+                    effects.add(new VoidBedrockEffect());
+                    break;
+                case 4:
+                    effects.add(new VoidBedrockEffect());
+                    break;
+                case 5:
+                    effects.add(new VoidBedrockEffect());
+                    break;
             }
+            this.dangerState = true;
         }
 
         for(IVoidEffect effect : this.effects){
@@ -46,7 +61,7 @@ public class VoidChunkStorage implements IVoidChunk {
             double z = this.chunk.getPos().getZStart() << 4;
             int actY = world.getHeight((int)x,(int)z);
 
-            world.profiler.startSection(effect.getName().toString()+":update");
+            world.profiler.startSection(VoidUtils.MOD_ID+":"+effect.getName().toString()+":update");
             effect.update(this, world, new BlockPos(x,actY,z));
             world.profiler.endSection();
         }

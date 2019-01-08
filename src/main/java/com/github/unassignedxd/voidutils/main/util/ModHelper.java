@@ -79,7 +79,7 @@ public final class ModHelper {
                     player.world.playSound(player, tile.getPos(), SoundEvents.ENTITY_ITEMFRAME_REMOVE_ITEM, SoundCategory.BLOCKS, .5f, 1f);
                     if (!player.world.isRemote) {
                         player.inventory.addItemStackToInventory(mergeStack.copy());
-                        mergeStack.shrink(1);
+                        handler.extractItem(slotID, 1, false);
                     }
                     return true;
                 }
@@ -115,6 +115,11 @@ public final class ModHelper {
         }
 
         return returnList;
+    }
+
+    public static ItemStack applyData(ItemStack stack, NBTTagCompound data) {
+        stack.setTagCompound(data);
+        return stack;
     }
 
     /**

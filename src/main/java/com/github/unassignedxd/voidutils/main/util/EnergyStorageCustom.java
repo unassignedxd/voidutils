@@ -15,8 +15,11 @@ public class EnergyStorageCustom extends EnergyStorage implements INBTSerializab
         super(capacity);
     }
 
-    public int setCapacity(int capacity) { return this.capacity = capacity; }
-
+    /**
+    public int setCapacity(int capacity) {
+        return this.capacity = capacity;
+    }
+*/
     public boolean atCapacity() { return this.getEnergyStored() == this.getMaxEnergyStored();}
 
     @Override

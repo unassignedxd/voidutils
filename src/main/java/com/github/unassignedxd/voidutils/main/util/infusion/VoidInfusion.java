@@ -50,6 +50,8 @@ public class VoidInfusion {
         this.energyUse = tempEnergyUse;
     }
 
+    public boolean isUseless() { return (this.voidAmount == 0 && this.powerAmount == 0 && this.depletionAmount == 0); }
+
     public double getVoidAmount() {
         return voidAmount;
     }

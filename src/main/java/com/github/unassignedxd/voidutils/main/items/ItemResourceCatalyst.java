@@ -27,8 +27,8 @@ public class ItemResourceCatalyst extends ItemBase {
             compound = new NBTTagCompound();
 
         dupeItem.writeToNBT(compound);
-        compound.setInteger("PowerUse", powerUse);
-        compound.setDouble("DepletionRateAmount", depletionRateAmount);
+        compound.setInteger("EnergyUse", powerUse);
+        compound.setDouble("DepletionRate", depletionRateAmount);
 
         stack.setTagCompound(compound);
     }
@@ -38,7 +38,7 @@ public class ItemResourceCatalyst extends ItemBase {
         ItemStack held = player.getHeldItem(hand);
         if(!world.isRemote){
             if(player.isSneaking()){
-                ModHelper.clearNBT(held, "PowerUse", "DepletionRateAmount", "id");
+                ModHelper.clearNBT(held, "EnergyUse", "DepletionRate", "id");
                 return EnumActionResult.SUCCESS;
             }
         }
@@ -50,10 +50,10 @@ public class ItemResourceCatalyst extends ItemBase {
         if(!stack.isEmpty()) {
             NBTTagCompound compound = stack.getTagCompound();
             if(compound != null) {
-                if(compound.hasKey("id") && compound.hasKey("PowerUse") && compound.hasKey("DepletionRateAmount")) {
+                if(compound.hasKey("id") && compound.hasKey("EnergyUse") && compound.hasKey("DepletionRate")) {
                     tooltip.add("Item: " + compound.getTag("id"));
                     tooltip.add("Power Use / t: " + compound.getInteger("PowerUse"));
-                    tooltip.add("Depletion Rate / dt: " + compound.getDouble("DepletionRateAmount"));
+                    tooltip.add("Depletion Rate / dt: " + compound.getDouble("DepletionRate"));
                 }
             }
         }

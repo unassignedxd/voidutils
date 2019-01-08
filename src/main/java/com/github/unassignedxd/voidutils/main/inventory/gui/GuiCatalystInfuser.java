@@ -2,6 +2,7 @@ package com.github.unassignedxd.voidutils.main.inventory.gui;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
+import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCatalyticInfuser;
 import com.github.unassignedxd.voidutils.main.inventory.container.ContainerCatalystInfuser;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketButtonToTile;
@@ -17,12 +18,12 @@ import java.io.IOException;
 public class GuiCatalystInfuser extends GuiMod {
 
     private static final ResourceLocation RESOURCE = new ResourceLocation(VoidUtils.MOD_ID, "textures/gui/gui_catalyst_infuser");
-    private final TileCatalystInfuser machine;
+    private final TileCatalyticInfuser machine;
 
     public GuiCatalystInfuser(InventoryPlayer inventoryPlayer, TileBase tile){
         super(new ContainerCatalystInfuser(inventoryPlayer, tile));
 
-        this.machine = (TileCatalystInfuser) tile;
+        this.machine = (TileCatalyticInfuser) tile;
         this.xSize = 50;
         this.ySize = 50;
     }

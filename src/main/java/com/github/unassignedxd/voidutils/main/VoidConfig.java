@@ -10,6 +10,9 @@ public class VoidConfig {
         @Config.Comment("How often should VoidUtil's TEs send data to the Clients. Higher numbers will increase network traffic. Default: 5 ticks")
         public int teUpdate = 5;
 
+        @Config.Comment("Which blocks can the Bedrock event can replace.")
+        public String[] bedrockEventReplaceBlacklist = {}; //todo add chest / etc.
+
         @Config.Comment({"As VoidUtils has an automated system to add all types of ingots in the game as acceptable catalyst types, you can blacklist them here if you do not want them to exist.",
                             "The string you should put is the resource location of the item that you want blacklisted. To find this, use the in-game's advanced tooltip function."})
         public String[] resourceCatalystBlacklist = {};
