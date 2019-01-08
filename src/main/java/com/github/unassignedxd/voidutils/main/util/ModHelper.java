@@ -97,11 +97,7 @@ public final class ModHelper {
         for(String oreName : OreDictionary.getOreNames()) {
             if(oreName.contains("ingot")){
                 for(ItemStack ingot : OreDictionary.getOres(oreName)){
-                    for(String idBlack : VoidConfig.general.resourceCatalystBlacklist){
-                        if(idBlack != ingot.getItem().getRegistryName().toString()){
-                            returnList.add(ingot);
-                        }
-                    }
+                    returnList.add(ingot); //todo blacklisting
                 }
             }
         }

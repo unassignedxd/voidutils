@@ -21,6 +21,9 @@ public class VoidConfig {
                             "The string you should put is the resource location of the item itself, to find this, use the in-game's advanced tooltip function."})
         public String[] resourceCatalystTypes = {};
 
+        @Config.Comment({"Enable default Resource Catalyst recipes, which automatically register according to the types that exist. The recipe will autofill itself with the according block."})
+        public boolean resourceCatalystDefaultRecipe = true;
+
         @Config.Comment("The max receive that the catalytic infuser can receive energy. Default: 500000 RF /t")
         public int catalyticInfuserMaxReceive = 500000;
     }
