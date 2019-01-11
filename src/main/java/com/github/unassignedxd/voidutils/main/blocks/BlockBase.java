@@ -1,6 +1,5 @@
 package com.github.unassignedxd.voidutils.main.blocks;
 
-import com.github.unassignedxd.voidutils.main.registry.ICreativeItem;
 import com.github.unassignedxd.voidutils.main.registry.IModItem;
 import com.github.unassignedxd.voidutils.main.registry.IModelProvider;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
@@ -10,7 +9,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class BlockBase extends Block implements IModItem, ICreativeItem, IModelProvider {
+public class BlockBase extends Block implements IModItem, IModelProvider {
     protected String name;
 
     public BlockBase(String name, Material mat, float hardness, float resistance) {

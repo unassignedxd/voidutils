@@ -46,6 +46,13 @@ public class ResourceCatalystRecipe {
         this.particleColor = particleColor;
     }
 
+    public ResourceCatalystRecipe(ResourceLocation name, ItemStack input,
+                                  ItemStack modifier1, ItemStack modifier2, ItemStack modifier3, ItemStack modifier4, ItemStack modifier5, ItemStack modifier6, ItemStack modifier7, ItemStack modifier8,
+                                  ResourceCatalyst output, int energyUse, int particleColor) {
+        this(name, Ingredient.fromStacks(input), Ingredient.fromStacks(modifier1), Ingredient.fromStacks(modifier2), Ingredient.fromStacks(modifier3), Ingredient.fromStacks(modifier4), Ingredient.fromStacks(modifier5),
+                Ingredient.fromStacks(modifier6), Ingredient.fromStacks(modifier7), Ingredient.fromStacks(modifier8), output, energyUse, particleColor);
+    }
+
     public ResourceCatalystRecipe registerRecipe() {
         VoidUtilsAPI.RESOURCE_INFUSION_RECIPES.put(this.name, this);
         return this;

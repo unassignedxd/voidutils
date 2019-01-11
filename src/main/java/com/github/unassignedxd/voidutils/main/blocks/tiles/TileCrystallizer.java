@@ -6,9 +6,11 @@ import com.github.unassignedxd.voidutils.main.items.ItemResourceCatalyst;
 import com.github.unassignedxd.voidutils.main.items.ItemVoidCatalyst;
 import com.github.unassignedxd.voidutils.main.util.EnergyStorageCustom;
 import com.github.unassignedxd.voidutils.main.util.ModHelper;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class TileCrystallizer extends TileBase {
@@ -25,7 +27,7 @@ public class TileCrystallizer extends TileBase {
         }
     };
 
-    public final EnergyStorageCustom energyStorage = new EnergyStorageCustom(10000000, 500000, 500000);
+    public final EnergyStorageCustom energyStorage = new EnergyStorageCustom(10000000, 10000, 10000);
     public static final int ENERGY_USE = 10000; //rf / t
 
     public int processTime;
@@ -48,21 +50,22 @@ public class TileCrystallizer extends TileBase {
                     if(input.getItem() instanceof ItemResourceCatalyst)
                         this.inv.setStackInSlot(1, createResourceCrystal(input));
                     else if(input.getItem() instanceof ItemVoidCatalyst)
-                        this.inv.setStackInSlot(1, createVoidCatalyst(input));
+                        this.inv.setStackInSlot(1, createVoidCrystal(input));
                 }
             }else {
                 processTime--;
             }
-        }
+        } else { this.processTime = 0; }
     }
 
-    private ItemStack createVoidCatalyst(ItemStack input){
+    private ItemStack createVoidCrystal(ItemStack input){
         ItemStack returnStack = new ItemStack(ModBlocks.CRYSTAL);
         NBTTagCompound inputCompound = input.getTagCompound();
         if(inputCompound == null) { VoidUtils.logger.error("An NBT error has occured when trying to write catalytic data to a crystal! This should not happen!"); return ItemStack.EMPTY; }
 
         if(!inputCompound.hasKey("VoidAmount") || !inputCompound.hasKey("PowerAmount") || !inputCompound.hasKey("DepletionRateAmount") || !inputCompound.hasKey("EnergyUse")){
-            VoidUtils.logger.error("An error occured when trying to check for valid catalytic data. This should not happen!"); return ItemStack.EMPTY;
+            VoidUtils.logger.error("An error occured when trying to check for valid catalytic data. This should not happen!");
+            return ItemStack.EMPTY;
         }
 
         NBTTagCompound compound = new NBTTagCompound();
@@ -83,8 +86,9 @@ public class TileCrystallizer extends TileBase {
         NBTTagCompound inputCompound = input.getTagCompound();
         if(inputCompound == null) { VoidUtils.logger.error("An NBT error has occured when trying to write catalytic data to a crystal! This should not happen!"); return ItemStack.EMPTY; }
 
-        if(!inputCompound.hasKey("EnergyUse") || !inputCompound.hasKey("DepletionRate") || !inputCompound.hasKey("id")){
-            VoidUtils.logger.error("An error occured when trying to check for valid catalytic data. This should not happen!"); return ItemStack.EMPTY;
+        if(!inputCompound.hasKey("EnergyUse") || !inputCompound.hasKey("DepletionRate") || !inputCompound.hasKey("ProcessRate") ||!inputCompound.hasKey("id")){
+            VoidUtils.logger.error("An error occured when trying to check for valid catalytic data. This should not happen!");
+            return ItemStack.EMPTY;
         }
 
         NBTTagCompound compound = new NBTTagCompound();
@@ -93,6 +97,7 @@ public class TileCrystallizer extends TileBase {
         compound.setDouble("DepletionRate", inputCompound.getDouble("DepletionRate"));
         compound.setDouble("Depletion", 0);
         compound.setInteger("EnergyUse", inputCompound.getInteger("EnergyUse"));
+        compound.setDouble("ProcessRate", inputCompound.getDouble("ProcessRate"));
 
         ModHelper.applyData(returnStack, compound);
 
@@ -109,6 +114,11 @@ public class TileCrystallizer extends TileBase {
     @Override
     public IItemHandlerModifiable getItemHandler(EnumFacing facing) {
         return this.inv;
+    }
+
+    @Override
+    public IEnergyStorage getEnergyStorage(EnumFacing facing) {
+        return this.energyStorage;
     }
 
     @Override

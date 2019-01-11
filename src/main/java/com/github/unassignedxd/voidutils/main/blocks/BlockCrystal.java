@@ -9,7 +9,7 @@ import com.github.unassignedxd.voidutils.main.blocks.tiles.TileCrystal;
  */
 public class BlockCrystal extends BlockTileBase {
 
-    public BlockCrystal(){
-        super("", TileCrystal.class, "");
+    public BlockCrystal(String name){
+        super(name, TileCrystal.class, "crystal");
     }
 }

@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 
 public class BlockInfuser extends BlockTileBase implements ITESRProvider {
 
-    public BlockInfuser(){
-        super("infuser", Material.IRON, TileInfuser.class, "infuser");
+    public BlockInfuser(String name){
+        super (name, Material.IRON, TileInfuser.class, "infuser");
     }
 
     @Override

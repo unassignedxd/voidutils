@@ -21,18 +21,19 @@ public class RegistryHandler {
 
     public static void addItemToRegister(IModItem item) { ITEMS.add(item);  }
 
-    private static void registerItem(Item item, String name, CreativeTabs tab){
+    private static void registerItem(Item item, String name){
         item.setTranslationKey(VoidUtils.MOD_ID + "." + name);
         item.setRegistryName(VoidUtils.MOD_ID, name);
-        item.setCreativeTab(tab);
+        item.setCreativeTab(VoidUtils.CREATIVE_TAB);
 
         ForgeRegistries.ITEMS.register(item);
     }
 
-    private static void registerBlock(Block block, String name, ItemBlock itemBlock, CreativeTabs tab){
+    private static void registerBlock(Block block, String name, ItemBlock itemBlock){
         block.setTranslationKey(VoidUtils.MOD_ID + "." + name);
         block.setRegistryName(VoidUtils.MOD_ID, name);
-        block.setCreativeTab(tab);
+        block.setCreativeTab(VoidUtils.CREATIVE_TAB);
+
 
         ForgeRegistries.BLOCKS.register(block);
 
@@ -43,20 +44,15 @@ public class RegistryHandler {
 
     }
 
-    private static CreativeTabs getCreativeTabFromItem(IModItem item){
-        if(item instanceof ICreativeItem) { return ((ICreativeItem) item).getCreativeTab(); }
-        return null;
-    }
-
     public static void preInit(FMLPreInitializationEvent event){
         for(IModItem item : ITEMS) {
 
             if(item instanceof Item) {
-                registerItem((Item)item, item.getUnlocalizedName(), getCreativeTabFromItem(item));
+                registerItem((Item)item, item.getUnlocalizedName());
             }
             else if(item instanceof Block) {
                 Block block = (Block)item;
-                registerBlock(block, item.getUnlocalizedName(), new ItemBlock(block), getCreativeTabFromItem(item));
+                registerBlock(block, item.getUnlocalizedName(), new ItemBlock(block));
             }
 
             if(item instanceof IModelProvider){
@@ -67,6 +63,7 @@ public class RegistryHandler {
 
             item.preInit(event);
         }
+        VoidUtils.logger.info("Successfully registered items!");
     }
 
     public static void init(FMLInitializationEvent event){

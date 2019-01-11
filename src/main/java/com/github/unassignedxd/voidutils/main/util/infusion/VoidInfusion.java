@@ -67,4 +67,20 @@ public class VoidInfusion {
     public int getEnergyUse() {
         return energyUse;
     }
+
+    public void setDepletionAmount(double depletionAmount) {
+        this.depletionAmount = depletionAmount;
+    }
+
+    public void setEnergyUse(int energyUse) {
+        this.energyUse = energyUse;
+    }
+
+    public void setPowerAmount(double powerAmount) {
+        this.powerAmount = powerAmount;
+    }
+
+    public void setVoidAmount(double voidAmount) {
+        this.voidAmount = voidAmount;
+    }
 }

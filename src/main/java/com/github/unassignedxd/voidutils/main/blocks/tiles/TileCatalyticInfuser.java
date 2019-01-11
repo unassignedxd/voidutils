@@ -6,6 +6,7 @@ import com.github.unassignedxd.voidutils.api.recipe.ResourceCatalystRecipe;
 import com.github.unassignedxd.voidutils.main.VoidConfig;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.init.ModItems;
+import com.github.unassignedxd.voidutils.main.items.ItemVoidCatalystUninfused;
 import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketParticleStream;
 import com.github.unassignedxd.voidutils.main.util.EnergyStorageCustom;
@@ -18,10 +19,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
@@ -66,7 +71,7 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         ArrayList<TileInfuser> infusers = getInfusersAround();
         if(infusers.size() < 2) return false;
 
-        VoidInfusion infusion = getVoidInfusion(infusers);
+        VoidInfusion infusion = getVoidInfusion(infusers, this.inv.getStackInSlot(0));
         if(infusion == null) return false;
 
         int energyUse = infusion.getEnergyUse(); //todo custom capacity
@@ -123,7 +128,7 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         return compound;
     }
 
-    private VoidInfusion getVoidInfusion(ArrayList<TileInfuser> infusers) {
+    private VoidInfusion getVoidInfusion(ArrayList<TileInfuser> infusers, ItemStack catalyst) {
         ArrayList<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < infusers.size(); i++){
             items.add(infusers.get(i).getStackInSlot());
@@ -145,6 +150,8 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         }
 
         VoidInfusion infusion = new VoidInfusion(arrayModifiers);
+
+        ModHelper.limitInfusion(infusion, catalyst);
 
         return infusion.isUseless() ? null : infusion;
     }
@@ -190,7 +197,7 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         return true;
     }
 
-    private ItemStack createResourceCatalyst(ResourceCatalystRecipe recipe) {
+    public static ItemStack createResourceCatalyst(ResourceCatalystRecipe recipe) {
         ResourceCatalyst catalyst = recipe.output;
         if(catalyst == null) return ItemStack.EMPTY;
 
@@ -200,16 +207,17 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         ModHelper.applyData(returnStack, compound);
 
         if(!returnStack.hasTagCompound() ||
-                !returnStack.getTagCompound().hasKey("EnergyUse") || !returnStack.getTagCompound().hasKey("DepletionRate") || !returnStack.getTagCompound().hasKey("id")) {
+                !returnStack.getTagCompound().hasKey("EnergyUse") || !returnStack.getTagCompound().hasKey("DepletionRate") || !returnStack.getTagCompound().hasKey("ProcessRate") || !returnStack.getTagCompound().hasKey("id")) {
             VoidUtils.logger.error("Failed to properly write catalytic data to a catalyst! This should not happen!");
         }
 
         return returnStack;
     }
 
-    private NBTTagCompound writeResourceCatalystData(ResourceCatalyst catalyst, NBTTagCompound compound){
+    private static NBTTagCompound writeResourceCatalystData(ResourceCatalyst catalyst, NBTTagCompound compound){
         compound.setInteger("EnergyUse", catalyst.getPowerUseAmount());
         compound.setDouble("DepletionRate", catalyst.getDepletionRate());
+        compound.setInteger("ProcessRate", catalyst.getDupeRate());
         catalyst.getResourceDupe().writeToNBT(compound);
         return compound;
     }
@@ -245,7 +253,9 @@ public class TileCatalyticInfuser extends TileBase implements IButtonReactor {
         return returnList;
     }
 
-    private boolean isVoidInfusionCrafting()  { return this.inv.getStackInSlot(0).getItem() == ModItems.VOID_UNINFUSED_CATALYST; }
+    private boolean isVoidInfusionCrafting()  {
+        return this.inv.getStackInSlot(0).getItem() instanceof ItemVoidCatalystUninfused;
+    }
 
     private void resetMachine() {
         this.processTime = 0;

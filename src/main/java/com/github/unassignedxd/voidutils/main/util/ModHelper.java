@@ -3,6 +3,8 @@ package com.github.unassignedxd.voidutils.main.util;
 import com.github.unassignedxd.voidutils.main.VoidConfig;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
+import com.github.unassignedxd.voidutils.main.items.ItemVoidCatalystUninfused;
+import com.github.unassignedxd.voidutils.main.util.infusion.VoidInfusion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -88,31 +90,6 @@ public final class ModHelper {
         return false;
     }
 
-    /*
-     * @return The catalyst types that exist.
-     */
-    public static NonNullList<ItemStack> getAcceptableCatalystTypes() {
-        NonNullList<ItemStack> returnList = NonNullList.create();
-
-        for(String oreName : OreDictionary.getOreNames()) {
-            if(oreName.contains("ingot")){
-                for(ItemStack ingot : OreDictionary.getOres(oreName)){
-                    returnList.add(ingot); //todo blacklisting
-                }
-            }
-        }
-        for(String stringLoc : VoidConfig.general.resourceCatalystTypes){
-            ResourceLocation location = new ResourceLocation(stringLoc);
-            if(ForgeRegistries.ITEMS.containsKey(location)){
-                returnList.add(new ItemStack(ForgeRegistries.ITEMS.getValue(location)));
-            }else if(ForgeRegistries.BLOCKS.containsKey(location)){
-                returnList.add(new ItemStack(ForgeRegistries.BLOCKS.getValue(location)));
-            }
-        }
-
-        return returnList;
-    }
-
     public static ItemStack applyData(ItemStack stack, NBTTagCompound data) {
         stack.setTagCompound(data);
         return stack;
@@ -160,5 +137,34 @@ public final class ModHelper {
                     color, alpha, scale, maxAge, 0f, false, false);
         }
     }
+
+    public static void limitInfusion(VoidInfusion infusion, ItemStack catalyst) {
+        int tier = ((ItemVoidCatalystUninfused)catalyst.getItem()).getTier();
+
+        switch(tier) {
+            case 1:
+                if(infusion.getPowerAmount() > 25){ infusion.setPowerAmount(25); }
+                if(infusion.getVoidAmount() > 25){ infusion.setVoidAmount(25); }
+                break;
+            case 2:
+                if(infusion.getPowerAmount() > 50){ infusion.setPowerAmount(50); }
+                if(infusion.getVoidAmount() > 50){ infusion.setVoidAmount(50); }
+                break;
+            case 3:
+                if(infusion.getPowerAmount() > 100){ infusion.setPowerAmount(100); }
+                if(infusion.getVoidAmount() > 100){ infusion.setVoidAmount(100); }
+                break;
+            case 4:
+                if(infusion.getPowerAmount() > 500){ infusion.setPowerAmount(500); }
+                if(infusion.getVoidAmount() > 500){ infusion.setVoidAmount(500); }
+                break;
+            case 5:
+                if(infusion.getPowerAmount() > 2500){ infusion.setPowerAmount(2500); }
+                if(infusion.getVoidAmount() > 2500){ infusion.setVoidAmount(2500); }
+                break;
+
+        }
+    }
+
 
 }

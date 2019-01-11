@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main;
 
 import com.github.unassignedxd.voidutils.main.chunk.voidenergy.CapabilityVoidEnergy;
+import com.github.unassignedxd.voidutils.main.compat.VoidCompat;
 import com.github.unassignedxd.voidutils.main.init.ModBlocks;
 import com.github.unassignedxd.voidutils.main.init.ModItems;
 import com.github.unassignedxd.voidutils.main.init.ModRecipes;
@@ -59,6 +60,7 @@ public class VoidUtils {
         new ModBlocks();
         new ModItems();
 
+        VoidCompat.preInit();
         RegistryHandler.preInit(event);
         proxy.preInit(event);
     }
@@ -69,12 +71,14 @@ public class VoidUtils {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
+        VoidCompat.init();
         RegistryHandler.init(event);
         proxy.init(event);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        VoidCompat.postInit();
         RegistryHandler.postInit(event);
         proxy.postInit(event);
     }
@@ -82,5 +86,9 @@ public class VoidUtils {
     /**
      * Resource catalyst are for duping items
      * Void Crystals are used in infusion, along with modifiers to create a Void Crystal Catalyst
+     * todo
+     *      -> Work on Crystal Stand, Crystal and Stabilizers
+     *      -> Work on lang and textures
+     *      -> You use crafting catalyst to create either (straight to) resource catalyst, or create uninfused void catatlyts.
      */
 }

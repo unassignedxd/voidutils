@@ -59,4 +59,8 @@ public class ItemVoidCatalyst extends ItemBase {
         return EnumActionResult.FAIL;
     }
 
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return true;
+    }
 }

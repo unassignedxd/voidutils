@@ -2,7 +2,6 @@ package com.github.unassignedxd.voidutils.main.blocks;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.blocks.tiles.TileBase;
-import com.github.unassignedxd.voidutils.main.registry.ICreativeItem;
 import com.github.unassignedxd.voidutils.main.registry.IModItem;
 import com.github.unassignedxd.voidutils.main.registry.IModelProvider;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
@@ -27,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
-public class BlockTileBase extends BlockContainer implements IModItem, ICreativeItem, IModelProvider {
+public class BlockTileBase extends BlockContainer implements IModItem, IModelProvider {
 
     private final String name;
 

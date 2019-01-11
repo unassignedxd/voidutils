@@ -1,6 +1,5 @@
 package com.github.unassignedxd.voidutils.main.items;
 
-import com.github.unassignedxd.voidutils.main.registry.ICreativeItem;
 import com.github.unassignedxd.voidutils.main.registry.IModItem;
 import com.github.unassignedxd.voidutils.main.registry.IModelProvider;
 import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
@@ -9,7 +8,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class ItemBase extends Item implements IModItem, ICreativeItem, IModelProvider {
+public class ItemBase extends Item implements IModItem, IModelProvider {
 
     public final String name;
 

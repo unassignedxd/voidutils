@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 
 public class BlockCatalyticInfuser extends BlockTileBase implements ITESRProvider {
 
-    public BlockCatalyticInfuser(){
-        super("catalyst_infuser", Material.IRON, TileCatalyticInfuser.class, "catalyst_infuser");
+    public BlockCatalyticInfuser(String name){
+        super(name, Material.IRON, TileCatalyticInfuser.class, "catalyst_infuser");
     }
 
     @Override

@@ -21,13 +21,14 @@ public class ItemResourceCatalyst extends ItemBase {
         this.setMaxStackSize(1);
     }
 
-    public static void storeData(ItemStack stack, ItemStack dupeItem, int powerUse, double depletionRateAmount){
+    public static void storeData(ItemStack stack, ItemStack dupeItem, int powerUse, int processRate, double depletionRateAmount){
         NBTTagCompound compound = stack.getTagCompound();
         if(compound == null)
             compound = new NBTTagCompound();
 
         dupeItem.writeToNBT(compound);
         compound.setInteger("EnergyUse", powerUse);
+        compound.setInteger("ProcessRate", processRate);
         compound.setDouble("DepletionRate", depletionRateAmount);
 
         stack.setTagCompound(compound);
@@ -50,9 +51,10 @@ public class ItemResourceCatalyst extends ItemBase {
         if(!stack.isEmpty()) {
             NBTTagCompound compound = stack.getTagCompound();
             if(compound != null) {
-                if(compound.hasKey("id") && compound.hasKey("EnergyUse") && compound.hasKey("DepletionRate")) {
+                if(compound.hasKey("EnergyUse") && compound.hasKey("DepletionRate") && compound.hasKey("id")) {
                     tooltip.add("Item: " + compound.getTag("id"));
-                    tooltip.add("Power Use / t: " + compound.getInteger("PowerUse"));
+                    tooltip.add("Process Rate / t: " + compound.getInteger("ProcessRate"));
+                    tooltip.add("Power Use / t: " + compound.getInteger("EnergyUse"));
                     tooltip.add("Depletion Rate / dt: " + compound.getDouble("DepletionRate"));
                 }
             }
