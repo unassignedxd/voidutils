@@ -1,25 +1,14 @@
 package com.github.unassignedxd.voidutils.main;
 
-import com.github.unassignedxd.voidutils.main.chunk.voidenergy.CapabilityVoidEnergy;
-import com.github.unassignedxd.voidutils.main.compat.VoidCompat;
-import com.github.unassignedxd.voidutils.main.init.ModBlocks;
-import com.github.unassignedxd.voidutils.main.init.ModItems;
-import com.github.unassignedxd.voidutils.main.init.ModRecipes;
-import com.github.unassignedxd.voidutils.main.inventory.GuiHandler;
-import com.github.unassignedxd.voidutils.main.network.PacketHandler;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
-import com.github.unassignedxd.voidutils.main.registry.RegistryHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -36,7 +25,7 @@ public class VoidUtils {
 
     public static final String MOD_ID = "voidutils";
     public static final String NAME = "Void Utils";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "0.0.1"; //r a b
 
     @Mod.Instance
     public static VoidUtils instance;
@@ -54,41 +43,19 @@ public class VoidUtils {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        CapabilityVoidEnergy.registerCap();
-        PacketHandler.init();
 
-        new ModBlocks();
-        new ModItems();
-
-        VoidCompat.preInit();
-        RegistryHandler.preInit(event);
         proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        ModRecipes.init();
 
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-
-        VoidCompat.init();
-        RegistryHandler.init(event);
         proxy.init(event);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        VoidCompat.postInit();
-        RegistryHandler.postInit(event);
+
         proxy.postInit(event);
     }
-
-    /**
-     * Resource catalyst are for duping items
-     * Void Crystals are used in infusion, along with modifiers to create a Void Crystal Catalyst
-     * todo
-     *      -> Work on Crystal Stand, Crystal and Stabilizers
-     *      -> Work on lang and textures
-     *      -> You use crafting catalyst to create either (straight to) resource catalyst, or create uninfused void catatlyts.
-     */
 }

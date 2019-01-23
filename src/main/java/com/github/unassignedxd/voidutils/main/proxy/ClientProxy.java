@@ -1,29 +1,32 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
-import com.github.unassignedxd.voidutils.main.events.ClientEvents;
-import com.github.unassignedxd.voidutils.main.particles.ParticleHandler;
-import com.github.unassignedxd.voidutils.main.particles.ParticleInfuse;
-import com.github.unassignedxd.voidutils.main.registry.ITESRProvider;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import com.github.unassignedxd.voidutils.main.VoidUtils;
+import com.github.unassignedxd.voidutils.main.block.IModBlock;
+import com.github.unassignedxd.voidutils.main.block.ModBlocks;
+import com.github.unassignedxd.voidutils.main.item.IModItem;
+import com.github.unassignedxd.voidutils.main.item.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Tuple;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientProxy implements IProxy {
 
+    private static HashMap<ItemStack, ModelResourceLocation> OBJECT_MODEL_REG = new HashMap<>();
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new ClientEvents());
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -37,25 +40,27 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void registerRenderer(ItemStack item, ModelResourceLocation resourceLocation) {
-        ModelLoader.setCustomModelResourceLocation(item.getItem(), item.getItemDamage(), resourceLocation);
+    public void registerRenders(ItemStack stack, ModelResourceLocation location) {
+        OBJECT_MODEL_REG.put(stack, location);
     }
 
-    @Override
-    public void registerTESR(ITESRProvider provider) {
-        Tuple<Class, TileEntitySpecialRenderer> tuple = provider.getTESR();
-        ClientRegistry.bindTileEntitySpecialRenderer(tuple.getFirst(), tuple.getSecond());
-    }
+    @SubscribeEvent
+    public static void onModelRegistryEvent(ModelRegistryEvent event){
+        for(Item item : ModItems.ITEMS){
+            if(item instanceof IModItem){
+                ((IModItem)item).registerRenderers();
+            }
+        }
+        for(Block block : ModBlocks.BLOCKS){
+            if(block instanceof IModBlock){
+                ((IModBlock) block).registerRenderers();
+            }
+        }
 
-    @Override
-    public void scheduleTask(Runnable runnable) {
-        Minecraft.getMinecraft().addScheduledTask(runnable);
-    }
+        for(Map.Entry<ItemStack, ModelResourceLocation> entry : OBJECT_MODEL_REG.entrySet()){
+            ModelLoader.setCustomModelResourceLocation(entry.getKey().getItem(), entry.getKey().getItemDamage(), entry.getValue());
+        }
 
-    @Override
-    public void spawnInfusionParticle(double posX, double posY, double posZ, double motionX, double motionY, double motionZ, int color, float alpha, float scale, int maxAge, float gravity, boolean collision, boolean fade) {
-        ParticleHandler.spawnParticle(() -> new ParticleInfuse(Minecraft.getMinecraft().world,
-                posX, posY, posZ, motionX, motionY, motionZ,
-                color, alpha, scale, maxAge, gravity, collision, fade), posX, posY, posZ, 32);
+        VoidUtils.logger.info("Successfully Registered Models!");
     }
 }

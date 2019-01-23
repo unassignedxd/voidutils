@@ -71,6 +71,7 @@ dependencies {
 
     compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${crafttweaker_version}"
     compile "com.blamejared:MTLib:${mtlib_version}"
+    compile "vazkii.patchouli:Patchouli:${patchouli_version}"
 }
 
 processResources {
