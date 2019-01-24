@@ -2,6 +2,7 @@ package com.github.unassignedxd.voidutils.main.capability.voidchunk;
 
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
+import com.github.unassignedxd.voidutils.main.VoidUtils;
 import net.minecraft.world.chunk.Chunk;
 
 public class VoidChunk implements IVoidChunk {
@@ -24,7 +25,6 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public void update() {
 
-
         if (shouldUpdate) {
             sendVoidPacket();
             this.shouldUpdate = false;
@@ -43,6 +43,23 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public VoidType getVoidType() {
         return this.voidType;
+    }
+
+    @Override
+    public VoidType setVoidType(int voidTypeID) {
+        VoidType setter = null;
+        for(VoidType voidType : VoidType.values()){
+            if(voidType.getId() == voidTypeID) setter = voidType;
+        }
+
+        if(setter == null) VoidUtils.logger.error("Failed to set a Chunk's Void Type to a proper setter ID! Chunk in question @ " + chunk.getPos());
+
+        return this.voidType = setter;
+    }
+
+    @Override
+    public VoidType setVoidType(VoidType voidType) {
+        return this.voidType = voidType;
     }
 
     @Override

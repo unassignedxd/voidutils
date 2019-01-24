@@ -1,6 +1,7 @@
 package com.github.unassignedxd.voidutils.main;
 
 import com.github.unassignedxd.voidutils.main.block.ModBlocks;
+import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.init.ObjectRegistryHandler;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
@@ -52,6 +53,8 @@ public class VoidUtils {
 
         new ModBlocks();
         new ModItems();
+
+        CapabilityVoidChunk.registerCap();
 
         ObjectRegistryHandler.preInit(event);
         proxy.preInit(event);

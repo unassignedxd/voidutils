@@ -10,6 +10,10 @@ public interface IVoidChunk {
 
     VoidType getVoidType();
 
+    VoidType setVoidType(int voidTypeID);
+
+    VoidType setVoidType(VoidType voidType);
+
     int getVoidStored();
 
     int setVoidStored(int set);
