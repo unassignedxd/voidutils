@@ -13,21 +13,21 @@ import javax.annotation.Nullable;
 
 public class ItemVoidGoggles extends ItemBase {
 
-    public ItemVoidGoggles(){
+    public ItemVoidGoggles() {
         super("void_goggles");
         this.setMaxStackSize(1);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if(worldIn != null && playerIn != null){
+        if (worldIn != null && playerIn != null) {
             ItemStack held = playerIn.getHeldItem(handIn);
-            if(!held.isEmpty()){
-                if(held.getItem() == this){
+            if (!held.isEmpty()) {
+                if (held.getItem() == this) {
                     ItemStack helm = playerIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                    if(!helm.isEmpty()){
+                    if (!helm.isEmpty()) {
                         playerIn.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1, 1);
-                        if(worldIn.isRemote){
+                        if (worldIn.isRemote) {
                             ItemStack set = helm.copy();
                             playerIn.setItemStackToSlot(EntityEquipmentSlot.HEAD, held.copy());
                             playerIn.setHeldItem(handIn, set);

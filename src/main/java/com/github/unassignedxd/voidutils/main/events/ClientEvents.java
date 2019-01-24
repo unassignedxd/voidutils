@@ -17,7 +17,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -35,9 +34,9 @@ public class ClientEvents {
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getMinecraft();
-        if(event.getType() == RenderGameOverlayEvent.ElementType.ALL){
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             ScaledResolution res = event.getResolution();
-            if(mc.player != null){
+            if (mc.player != null) {
                 EntityPlayer player = mc.player;
                 ItemStack goggles = ItemStack.EMPTY;
 
@@ -45,16 +44,16 @@ public class ClientEvents {
 
                 //todo add 'void watch' > crafted from goggles, displays even in inventory
                 ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                if(!helm.isEmpty()){
-                    if(helm.getItem() == ModItems.VOID_GOGGLES){
+                if (!helm.isEmpty()) {
+                    if (helm.getItem() == ModItems.VOID_GOGGLES) {
                         goggles = helm;
                     }
                 }
 
-                if(!goggles.isEmpty()){
+                if (!goggles.isEmpty()) {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(player.world.getChunk(player.getPosition()));
-                    if(voidChunk != null && voidChunk.getVoidType() != null){
-                        int barWidth = MathHelper.ceil(((float)voidChunk.getVoidStored() / (float)voidChunk.getMaxVoidStored() * 80));
+                    if (voidChunk != null && voidChunk.getVoidType() != null) {
+                        int barWidth = MathHelper.ceil(((float) voidChunk.getVoidStored() / (float) voidChunk.getMaxVoidStored() * 80));
                         int sclX = (res.getScaledWidth() / 2) - 150;
                         int sclY = res.getScaledHeight() - 10;
 
@@ -69,7 +68,7 @@ public class ClientEvents {
                         float fontScale = .65F;
                         GlStateManager.scale(fontScale, fontScale, fontScale);
                         String s = "-> " + voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
-                        mc.fontRenderer.drawString(s, (sclX+80) / fontScale - mc.fontRenderer.getStringWidth(s), (sclY-10) / fontScale, barColor, true);
+                        mc.fontRenderer.drawString(s, (sclX + 80) / fontScale - mc.fontRenderer.getStringWidth(s), (sclY - 10) / fontScale, barColor, true);
 
                         GlStateManager.color(1f, 1f, 1f);
 

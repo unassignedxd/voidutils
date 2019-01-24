@@ -4,10 +4,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CapabilityProviderSerializable<HANDLER> implements ICapabilityProvider, INBTSerializable<NBTBase> {

@@ -48,11 +48,12 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public VoidType setVoidType(int voidTypeID) {
         VoidType setter = null;
-        for(VoidType voidType : VoidType.values()){
-            if(voidType.getId() == voidTypeID) setter = voidType;
+        for (VoidType voidType : VoidType.values()) {
+            if (voidType.getId() == voidTypeID) setter = voidType;
         }
 
-        if(setter == null) VoidUtils.logger.error("Failed to set a Chunk's Void Type to a proper setter ID! Chunk in question @ " + chunk.getPos());
+        if (setter == null)
+            VoidUtils.logger.error("Failed to set a Chunk's Void Type to a proper setter ID! Chunk in question @ " + chunk.getPos());
 
         return this.voidType = setter;
     }
