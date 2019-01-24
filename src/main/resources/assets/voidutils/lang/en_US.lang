@@ -1,0 +1,8 @@
+#Items
+item.void_shard.name=Void Shard
+
+#Blocks
+tile.void_ore.name=Void Ore
+
+#Misc
+itemTab.voidutils=Void Utils

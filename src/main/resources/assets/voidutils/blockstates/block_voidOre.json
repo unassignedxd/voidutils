@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "voidutils:block_void_ore"}
+        ]
+    }
+}

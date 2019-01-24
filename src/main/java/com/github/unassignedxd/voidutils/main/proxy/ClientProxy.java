@@ -1,9 +1,8 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.block.IModBlock;
 import com.github.unassignedxd.voidutils.main.block.ModBlocks;
-import com.github.unassignedxd.voidutils.main.item.IModItem;
+import com.github.unassignedxd.voidutils.main.init.IModObject;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -45,15 +44,15 @@ public class ClientProxy implements IProxy {
     }
 
     @SubscribeEvent
-    public static void onModelRegistryEvent(ModelRegistryEvent event){
+    public void onModelRegistryEvent(ModelRegistryEvent event){
         for(Item item : ModItems.ITEMS){
-            if(item instanceof IModItem){
-                ((IModItem)item).registerRenderers();
+            if(item instanceof IModObject){
+                ((IModObject)item).registerRenderers();
             }
         }
         for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModBlock){
-                ((IModBlock) block).registerRenderers();
+            if(block instanceof IModObject){
+                ((IModObject) block).registerRenderers();
             }
         }
 

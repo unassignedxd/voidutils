@@ -1,6 +1,11 @@
 package com.github.unassignedxd.voidutils.main;
 
+import com.github.unassignedxd.voidutils.main.block.ModBlocks;
+import com.github.unassignedxd.voidutils.main.init.ObjectRegistryHandler;
+import com.github.unassignedxd.voidutils.main.item.ModItems;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
+import com.github.unassignedxd.voidutils.main.world.WorldOreGenerator;
+import com.github.unassignedxd.voidutils.main.world.WorldStructureGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -29,33 +34,44 @@ public class VoidUtils {
 
     @Mod.Instance
     public static VoidUtils instance;
+
     @SidedProxy(clientSide = "com.github.unassignedxd.voidutils.main.proxy.ClientProxy", serverSide = "com.github.unassignedxd.voidutils.main.proxy.ServerProxy")
     public static IProxy proxy;
 
-    public static Logger logger;
     public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(Blocks.BEDROCK); //todo icon
+            return new ItemStack(ModItems.VOID_SHARD); //todo icon
         }
     };
+
+    public static Logger logger;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
 
+        new ModBlocks();
+        new ModItems();
+
+        ObjectRegistryHandler.preInit(event);
         proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
 
+        new WorldOreGenerator();
+        new WorldStructureGenerator();
+
+        ObjectRegistryHandler.init(event);
         proxy.init(event);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
+        ObjectRegistryHandler.postInit(event);
         proxy.postInit(event);
     }
 }
