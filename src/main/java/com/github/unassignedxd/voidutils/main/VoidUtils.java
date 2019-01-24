@@ -29,7 +29,7 @@ public class VoidUtils {
 
     public static final String MOD_ID = "voidutils";
     public static final String NAME = "Void Utils";
-    public static final String VERSION = "0.0.1"; //r a b
+    public static final String VERSION = "0.0.1"; //r b a
 
     @Mod.Instance
     public static VoidUtils instance;
