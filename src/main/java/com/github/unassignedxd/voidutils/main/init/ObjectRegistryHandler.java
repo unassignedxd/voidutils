@@ -18,12 +18,12 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ObjectRegistryHandler {
 
     @SubscribeEvent
-    public static void onBlockRegisterEvent(RegistryEvent.Register<Block> event){
+    public static void onBlockRegisterEvent(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModObject){
-                block.setCreativeTab(((IModObject)block).getDisplayTab());
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
+                block.setCreativeTab(((IModObject) block).getDisplayTab());
                 registry.register(block);
             }
         }
@@ -35,15 +35,15 @@ public class ObjectRegistryHandler {
     public static void onItemRegisterEvent(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
 
-        for(Item item : ModItems.ITEMS) {
-            if(item instanceof IModObject) {
-                item.setCreativeTab(((IModObject)item).getDisplayTab());
+        for (Item item : ModItems.ITEMS) {
+            if (item instanceof IModObject) {
+                item.setCreativeTab(((IModObject) item).getDisplayTab());
                 registry.register(item);
             }
         }
 
-        for(Block block : ModBlocks.BLOCKS) {
-            if(block instanceof IModObject) {
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
                 ItemBlock itemBlock = new ItemBlock(block);
                 itemBlock.setRegistryName(block.getRegistryName());
                 registry.register(itemBlock);
@@ -54,42 +54,42 @@ public class ObjectRegistryHandler {
     }
 
     public static void preInit(FMLPreInitializationEvent event) {
-        for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModObject){
-                ((IModObject)block).preInit(event);
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
+                ((IModObject) block).preInit(event);
             }
         }
 
-        for(Item item : ModItems.ITEMS){
-            if(item instanceof IModObject){
+        for (Item item : ModItems.ITEMS) {
+            if (item instanceof IModObject) {
                 ((IModObject) item).preInit(event);
             }
         }
     }
 
     public static void init(FMLInitializationEvent event) {
-        for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModObject){
-                ((IModObject)block).init(event);
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
+                ((IModObject) block).init(event);
             }
         }
 
-        for(Item item : ModItems.ITEMS){
-            if(item instanceof IModObject){
+        for (Item item : ModItems.ITEMS) {
+            if (item instanceof IModObject) {
                 ((IModObject) item).init(event);
             }
         }
     }
 
     public static void postInit(FMLPostInitializationEvent event) {
-        for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModObject){
-                ((IModObject)block).postInit(event);
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
+                ((IModObject) block).postInit(event);
             }
         }
 
-        for(Item item : ModItems.ITEMS){
-            if(item instanceof IModObject){
+        for (Item item : ModItems.ITEMS) {
+            if (item instanceof IModObject) {
                 ((IModObject) item).postInit(event);
             }
         }

@@ -7,7 +7,6 @@ import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import com.github.unassignedxd.voidutils.main.world.WorldOreGenerator;
 import com.github.unassignedxd.voidutils.main.world.WorldStructureGenerator;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;

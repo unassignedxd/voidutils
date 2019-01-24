@@ -7,8 +7,8 @@ public class ModItems {
 
     public static final Item VOID_SHARD = new ItemVoidShard();
 
-    public static final Item[] ITEMS = new Item[] {
-        VOID_SHARD
+    public static final Item[] ITEMS = new Item[]{
+            VOID_SHARD
     };
 
 }

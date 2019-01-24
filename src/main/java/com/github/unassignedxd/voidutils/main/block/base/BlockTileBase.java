@@ -30,7 +30,7 @@ public class BlockTileBase extends BlockContainer implements IModObject {
     private final Class<? extends TileBase> tileClass;
     private final String tileName;
 
-    public BlockTileBase(String name, Material material, Class<? extends TileBase> clazz, String tileName){
+    public BlockTileBase(String name, Material material, Class<? extends TileBase> clazz, String tileName) {
         super(material);
 
         this.baseName = name;
@@ -56,7 +56,7 @@ public class BlockTileBase extends BlockContainer implements IModObject {
     public TileEntity createNewTileEntity(World world, int i) {
         try {
             return this.tileClass.newInstance();
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -78,9 +78,9 @@ public class BlockTileBase extends BlockContainer implements IModObject {
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        if(!worldIn.isRemote){
+        if (!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if(tileEntity instanceof TileBase)
+            if (tileEntity instanceof TileBase)
                 ((TileBase) tileEntity).dropInventory();
         }
         super.breakBlock(worldIn, pos, state);
@@ -89,8 +89,8 @@ public class BlockTileBase extends BlockContainer implements IModObject {
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileBase)
-            drops.add(((TileBase)tileEntity).getDataDrop(state, fortune));
+        if (tileEntity instanceof TileBase)
+            drops.add(((TileBase) tileEntity).getDataDrop(state, fortune));
         else
             super.getDrops(drops, world, pos, state, fortune);
     }
@@ -109,7 +109,7 @@ public class BlockTileBase extends BlockContainer implements IModObject {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TileBase)
+        if (tileEntity instanceof TileBase)
             ((TileBase) tileEntity).loadData(stack);
     }
 
@@ -124,11 +124,11 @@ public class BlockTileBase extends BlockContainer implements IModObject {
         this.updateRedstone(worldIn, pos);
     }
 
-    private void updateRedstone(World world, BlockPos pos){
-        if(!world.isRemote){
+    private void updateRedstone(World world, BlockPos pos) {
+        if (!world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(pos);
-            if(tileEntity instanceof TileBase)
-                ((TileBase)tileEntity).redstonePower = world.getRedstonePowerFromNeighbors(pos);
+            if (tileEntity instanceof TileBase)
+                ((TileBase) tileEntity).redstonePower = world.getRedstonePowerFromNeighbors(pos);
         }
     }
 }

@@ -14,7 +14,7 @@ public class ItemBase extends Item implements IModObject {
     public ItemBase(String name) {
         this.baseName = name;
 
-        this.setRegistryName(VoidUtils.MOD_ID, "item_"+name);
+        this.setRegistryName(VoidUtils.MOD_ID, "item_" + name);
         this.setTranslationKey(name);
     }
 

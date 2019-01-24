@@ -44,19 +44,19 @@ public class ClientProxy implements IProxy {
     }
 
     @SubscribeEvent
-    public void onModelRegistryEvent(ModelRegistryEvent event){
-        for(Item item : ModItems.ITEMS){
-            if(item instanceof IModObject){
-                ((IModObject)item).registerRenderers();
+    public void onModelRegistryEvent(ModelRegistryEvent event) {
+        for (Item item : ModItems.ITEMS) {
+            if (item instanceof IModObject) {
+                ((IModObject) item).registerRenderers();
             }
         }
-        for(Block block : ModBlocks.BLOCKS){
-            if(block instanceof IModObject){
+        for (Block block : ModBlocks.BLOCKS) {
+            if (block instanceof IModObject) {
                 ((IModObject) block).registerRenderers();
             }
         }
 
-        for(Map.Entry<ItemStack, ModelResourceLocation> entry : OBJECT_MODEL_REG.entrySet()){
+        for (Map.Entry<ItemStack, ModelResourceLocation> entry : OBJECT_MODEL_REG.entrySet()) {
             ModelLoader.setCustomModelResourceLocation(entry.getKey().getItem(), entry.getKey().getItemDamage(), entry.getValue());
         }
 

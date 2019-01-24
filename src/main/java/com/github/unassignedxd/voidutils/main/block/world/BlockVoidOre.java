@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class BlockVoidOre extends BlockBase {
 
-    public BlockVoidOre(){
+    public BlockVoidOre() {
         super("void_ore", Material.ROCK);
         this.setHardness(5f);
         this.setResistance(-1);

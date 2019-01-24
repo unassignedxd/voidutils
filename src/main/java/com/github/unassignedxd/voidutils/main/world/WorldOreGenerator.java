@@ -2,7 +2,6 @@ package com.github.unassignedxd.voidutils.main.world;
 
 import com.github.unassignedxd.voidutils.main.VoidConfig;
 import com.github.unassignedxd.voidutils.main.block.ModBlocks;
-import com.github.unassignedxd.voidutils.main.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -32,21 +31,21 @@ public class WorldOreGenerator implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator iChunkGenerator, IChunkProvider iChunkProvider) {
         int dimID = world.provider.getDimension();
 
-        if(VoidConfig.world.shouldVoidOreSpawn){
-            if(world.getWorldType() != WorldType.FLAT && !ArrayUtils.contains(VoidConfig.world.voidOreSpawnBlacklistDimIDs, dimID)) {
+        if (VoidConfig.world.shouldVoidOreSpawn) {
+            if (world.getWorldType() != WorldType.FLAT && !ArrayUtils.contains(VoidConfig.world.voidOreSpawnBlacklistDimIDs, dimID)) {
                 generateOre(ModBlocks.VOID_ORE.getDefaultState(), Blocks.STONE, world,
-                        random, chunkX<<4, chunkZ<<4,
+                        random, chunkX << 4, chunkZ << 4,
                         MathHelper.getInt(random, 3, VoidConfig.world.voidMaxVeinSize),
                         VoidConfig.world.voidOreSpawnChance, VoidConfig.world.voidOreMinY, VoidConfig.world.voidOreMaxY);
             }
         }
     }
 
-    public void generateOre(IBlockState state, Block block, World world, Random rand, int blockX, int blockZ, int maxVeinSize, int spawnChance, int minY, int maxY){
-        for(int i = 0; i < spawnChance; i++){
-            int posX = blockX+rand.nextInt(16);
-            int posY = minY+rand.nextInt(maxY-minY);
-            int posZ = blockZ+rand.nextInt(16);
+    public void generateOre(IBlockState state, Block block, World world, Random rand, int blockX, int blockZ, int maxVeinSize, int spawnChance, int minY, int maxY) {
+        for (int i = 0; i < spawnChance; i++) {
+            int posX = blockX + rand.nextInt(16);
+            int posY = minY + rand.nextInt(maxY - minY);
+            int posZ = blockZ + rand.nextInt(16);
             new WorldGenMinable(state, maxVeinSize, BlockMatcher.forBlock(block)).generate(world, rand, new BlockPos(posX, posY, posZ));
         }
     }

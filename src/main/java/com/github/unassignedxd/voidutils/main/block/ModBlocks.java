@@ -7,7 +7,7 @@ public class ModBlocks {
 
     public static Block VOID_ORE = new BlockVoidOre();
 
-    public static final Block[] BLOCKS = new Block[] {
-        VOID_ORE
+    public static final Block[] BLOCKS = new Block[]{
+            VOID_ORE
     };
 }

@@ -13,7 +13,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public interface IModObject {
 
     void preInit(FMLPreInitializationEvent event);
+
     void init(FMLInitializationEvent event);
+
     void postInit(FMLPostInitializationEvent event);
 
     String getBaseName();
@@ -22,7 +24,7 @@ public interface IModObject {
         ItemStack stack = this instanceof Block ? new ItemStack((Block) this) : new ItemStack((Item) this);
         try {
             VoidUtils.proxy.registerRenders(stack, new ModelResourceLocation(stack.getItem().getRegistryName(), "inventory"));
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             VoidUtils.logger.fatal("Failed to register object!", e);
         }
     }

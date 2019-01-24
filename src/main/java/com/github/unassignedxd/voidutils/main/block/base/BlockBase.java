@@ -21,7 +21,9 @@ public class BlockBase extends Block implements IModObject {
     }
 
     @Override
-    public String getBaseName() { return baseName; }
+    public String getBaseName() {
+        return baseName;
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {

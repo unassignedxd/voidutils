@@ -32,25 +32,36 @@ public class TileBase extends TileEntity implements ITickable {
 
     @Override
     public void update() { //always call super method from impls!
-        if(shouldUpdate()) {
+        if (shouldUpdate()) {
             ticksElasped++;
-            if(shouldSendData()) {
-                if(ticksElasped % getIntervalData() == 0){
+            if (shouldSendData()) {
+                if (ticksElasped % getIntervalData() == 0) {
                     this.sendData();
                 }
             }
-            if(shouldDetectTEs()){
-                for(EnumFacing facing : EnumFacing.VALUES) {
+            if (shouldDetectTEs()) {
+                for (EnumFacing facing : EnumFacing.VALUES) {
                     nearbyTiles[facing.ordinal()] = world.getTileEntity(pos.offset(facing));
                 }
             }
         }
     }
 
-    protected boolean shouldUpdate() { return true; }
-    protected boolean shouldSendData() {return true; }
-    protected int getIntervalData() { return VoidConfig.tileEntities.teUpdateInterval; }
-    protected boolean shouldDetectTEs() { return false; }
+    protected boolean shouldUpdate() {
+        return true;
+    }
+
+    protected boolean shouldSendData() {
+        return true;
+    }
+
+    protected int getIntervalData() {
+        return VoidConfig.tileEntities.teUpdateInterval;
+    }
+
+    protected boolean shouldDetectTEs() {
+        return false;
+    }
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -68,8 +79,8 @@ public class TileBase extends TileEntity implements ITickable {
         this.readNBT(compound, SaveType.TILE);
     }
 
-    public void writeNBT(NBTTagCompound compound, SaveType saveType){
-        if(saveType != SaveType.BLOCK) {
+    public void writeNBT(NBTTagCompound compound, SaveType saveType) {
+        if (saveType != SaveType.BLOCK) {
             compound.setInteger("RedstonePower", this.redstonePower);
             compound.setInteger("TicksElapsed", this.ticksElasped);
             super.writeToNBT(compound);
@@ -77,7 +88,7 @@ public class TileBase extends TileEntity implements ITickable {
     }
 
     public void readNBT(NBTTagCompound compound, SaveType saveType) {
-        if(saveType != SaveType.BLOCK) {
+        if (saveType != SaveType.BLOCK) {
             this.redstonePower = compound.getInteger("RedstonePower");
             this.ticksElasped = compound.getInteger("TicksElasped");
             super.readFromNBT(compound);
@@ -111,24 +122,30 @@ public class TileBase extends TileEntity implements ITickable {
 
     @SuppressWarnings("ConstantConditions")
     public void sendData() {
-        WorldServer server = (WorldServer)this.getWorld();
-        PlayerChunkMapEntry chunkMapEntry = server.getPlayerChunkMap().getEntry(this.getPos().getX()>>4, this.getPos().getZ()>>4);
-        if(chunkMapEntry != null) {
+        WorldServer server = (WorldServer) this.getWorld();
+        PlayerChunkMapEntry chunkMapEntry = server.getPlayerChunkMap().getEntry(this.getPos().getX() >> 4, this.getPos().getZ() >> 4);
+        if (chunkMapEntry != null) {
             chunkMapEntry.sendPacket(this.getUpdatePacket());
         }
     }
 
-    /** <--- Capability Start --->*/
+    /**
+     * <--- Capability Start --->
+     */
 
-    public IItemHandlerModifiable getItemHandler(EnumFacing facing) { return null; }
+    public IItemHandlerModifiable getItemHandler(EnumFacing facing) {
+        return null;
+    }
 
-    public IEnergyStorage getEnergyStorage(EnumFacing facing) { return null; }
+    public IEnergyStorage getEnergyStorage(EnumFacing facing) {
+        return null;
+    }
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return this.getItemHandler(facing) != null;
-        } else if(capability == CapabilityEnergy.ENERGY){
+        } else if (capability == CapabilityEnergy.ENERGY) {
             return this.getEnergyStorage(facing) != null;
         } else {
             return super.hasCapability(capability, facing);
@@ -139,9 +156,9 @@ public class TileBase extends TileEntity implements ITickable {
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) this.getItemHandler(facing);
-        } else if(capability == CapabilityEnergy.ENERGY) {
+        } else if (capability == CapabilityEnergy.ENERGY) {
             return (T) this.getEnergyStorage(facing);
         } else {
             return super.getCapability(capability, facing);
@@ -150,12 +167,12 @@ public class TileBase extends TileEntity implements ITickable {
 
     public void dropInventory() {
         IItemHandler itemHandler = this.getItemHandler(null);
-        if(itemHandler != null) {
-            for(int i = 0; i < itemHandler.getSlots(); i++){
+        if (itemHandler != null) {
+            for (int i = 0; i < itemHandler.getSlots(); i++) {
                 ItemStack stack = itemHandler.getStackInSlot(i);
-                if(!stack.isEmpty()) {
+                if (!stack.isEmpty()) {
                     EntityItem item = new EntityItem(this.world,
-                            this.getPos().getX()+.5, this.getPos().getY()+.5, this.getPos().getZ()+.5,
+                            this.getPos().getX() + .5, this.getPos().getY() + .5, this.getPos().getZ() + .5,
                             stack);
                     this.world.spawnEntity(item);
                 }
@@ -174,7 +191,7 @@ public class TileBase extends TileEntity implements ITickable {
         NBTTagCompound dataWrite = new NBTTagCompound();
         this.writeNBT(dataWrite, SaveType.BLOCK);
 
-        if(!dataWrite.isEmpty()){
+        if (!dataWrite.isEmpty()) {
             stack.setTagCompound(new NBTTagCompound());
             stack.getTagCompound().setTag("SavedTEData", dataWrite);
         }
@@ -182,10 +199,10 @@ public class TileBase extends TileEntity implements ITickable {
         return stack;
     }
 
-    public void loadData(ItemStack stack){
-        if(stack.hasTagCompound()){
+    public void loadData(ItemStack stack) {
+        if (stack.hasTagCompound()) {
             NBTTagCompound compound = stack.getTagCompound().getCompoundTag("SavedTEData");
-            if(compound != null) {
+            if (compound != null) {
                 this.readNBT(compound, SaveType.BLOCK);
             }
         }
