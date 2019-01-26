@@ -45,7 +45,7 @@ public class CapabilityVoidChunk {
                     NBTTagCompound compound = (NBTTagCompound) nbtBase;
                     if (compound.hasKey("VoidStored") && compound.hasKey("VoidTypeID")) {
                         iVoidChunk.setVoidStored(compound.getInteger("VoidStored"));
-                        iVoidChunk.setVoidType(compound.getInteger("VoidTypeID"));
+                        iVoidChunk.setVoidType(VoidType.getVoidTypeFromID(compound.getInteger("VoidTypeID")));
                     }
                 }
             }
@@ -56,19 +56,19 @@ public class CapabilityVoidChunk {
         return ModUtil.getCapability(chunk, VOID_CHUNK_CAPABILITY, DEFAULT_FACING);
     }
 
-    public static VoidType getVoidTypeWithRandoms(World world, int corruptedWeight, int pureWeight) {
+    public static VoidType getVoidTypeWithRandoms(World world) {
         Random rand = world.rand;
+        double rD = rand.nextDouble();
 
-        if (rand.nextDouble() < .975D) { //97.5% of chunks
+        if(rD < .95) { //95%
             return VoidType.NORMAL;
-        } else {
-            if (rand.nextInt(corruptedWeight + pureWeight) > pureWeight) {
-                return VoidType.PURE;
-            } else {
-                return VoidType.CORRUPTED;
-            }
+        } else if(rD < .975 && rD > .95){ //2.5&
+            return VoidType.PURE;
+        } else if(rD <= 1 && rD > .975){ //2.5&
+            return VoidType.CORRUPTED;
         }
 
+        return VoidType.NORMAL;
     }
 
 }

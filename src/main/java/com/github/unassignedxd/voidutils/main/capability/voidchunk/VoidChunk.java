@@ -2,8 +2,13 @@ package com.github.unassignedxd.voidutils.main.capability.voidchunk;
 
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
-import com.github.unassignedxd.voidutils.main.VoidUtils;
+import com.github.unassignedxd.voidutils.main.network.NetworkManager;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class VoidChunk implements IVoidChunk {
 
@@ -12,6 +17,8 @@ public class VoidChunk implements IVoidChunk {
 
     protected int voidEnergy;
     protected int capacity;
+
+    private boolean hasNode = false; //have a node in corrupted / pure areas, used in crafting and void equivalence trading.
 
     public VoidChunk(Chunk chunk, VoidType voidType, int voidEnergy, int capacity) {
         this.chunk = chunk;
@@ -24,15 +31,16 @@ public class VoidChunk implements IVoidChunk {
 
     @Override
     public void update() {
+        World world = chunk.getWorld();
 
-        if (shouldUpdate) {
-            sendVoidPacket();
+        if (this.shouldUpdate) {
+            NetworkManager.sendToAllLoaded(world, new BlockPos(this.chunk.x << 4, 0, this.chunk.z << 4), this.packetFactory());
             this.shouldUpdate = false;
         }
     }
 
-    private void sendVoidPacket() {
-
+    public IMessage packetFactory() {
+        return new PacketVoidChunk(this.chunk, this.voidEnergy, this.voidType.getId());
     }
 
     @Override
@@ -43,19 +51,6 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public VoidType getVoidType() {
         return this.voidType;
-    }
-
-    @Override
-    public VoidType setVoidType(int voidTypeID) {
-        VoidType setter = null;
-        for (VoidType voidType : VoidType.values()) {
-            if (voidType.getId() == voidTypeID) setter = voidType;
-        }
-
-        if (setter == null)
-            VoidUtils.logger.error("Failed to set a Chunk's Void Type to a proper setter ID! Chunk in question @ " + chunk.getPos());
-
-        return this.voidType = setter;
     }
 
     @Override

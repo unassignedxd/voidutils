@@ -4,6 +4,7 @@ import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.init.ObjectRegistryHandler;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
+import com.github.unassignedxd.voidutils.main.network.NetworkManager;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
 import com.github.unassignedxd.voidutils.main.world.WorldOreGenerator;
 import com.github.unassignedxd.voidutils.main.world.WorldStructureGenerator;
@@ -56,6 +57,7 @@ public class VoidUtils {
 
         CapabilityVoidChunk.registerCap();
 
+        NetworkManager.init();
         ObjectRegistryHandler.preInit(event);
         proxy.preInit(event);
     }

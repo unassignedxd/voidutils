@@ -32,6 +32,12 @@ public class ItemVoidGoggles extends ItemBase {
                             playerIn.setItemStackToSlot(EntityEquipmentSlot.HEAD, held.copy());
                             playerIn.setHeldItem(handIn, set);
                         }
+                    }else {
+                        playerIn.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1, 1);
+                        if (worldIn.isRemote) {
+                            playerIn.setItemStackToSlot(EntityEquipmentSlot.HEAD, held.copy());
+                            playerIn.setHeldItem(handIn, ItemStack.EMPTY);
+                        }
                     }
                 }
             }
@@ -39,7 +45,7 @@ public class ItemVoidGoggles extends ItemBase {
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 
-    @Nullable
+     @Nullable
     @Override
     public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
         return EntityEquipmentSlot.HEAD;

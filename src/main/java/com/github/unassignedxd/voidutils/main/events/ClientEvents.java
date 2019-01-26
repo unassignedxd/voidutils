@@ -6,6 +6,7 @@ import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.init.IModObject;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -53,22 +54,29 @@ public class ClientEvents {
                 if (!goggles.isEmpty()) {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(player.world.getChunk(player.getPosition()));
                     if (voidChunk != null && voidChunk.getVoidType() != null) {
-                        int barWidth = MathHelper.ceil(((float) voidChunk.getVoidStored() / (float) voidChunk.getMaxVoidStored() * 80));
+                        int barWidth = MathHelper.ceil(((float) voidChunk.getVoidStored() / (float) voidChunk.getMaxVoidStored() * 40));
                         int sclX = (res.getScaledWidth() / 2) - 150;
-                        int sclY = res.getScaledHeight() - 10;
+                        int sclY = res.getScaledHeight() - 20;
 
                         GlStateManager.pushMatrix();
+                        mc.getTextureManager().bindTexture(OVERLAYS);
+
+                        GlStateManager.color(1f, 1f, 1f);
+                        Gui.drawModalRectWithCustomSizedTexture(sclX, sclY, 0, 0, 43, 7, 256, 256);
 
                         int barColor = voidChunk.getVoidType().getDecimalColor();
                         GlStateManager.color((barColor >> 16 & 255) / 255f, (barColor >> 8 & 255) / 255f, (barColor & 255) / 255f);
-                        mc.getTextureManager().bindTexture(OVERLAYS);
 
-                        Gui.drawModalRectWithCustomSizedTexture(sclX, sclY, 0, 6, barWidth, 6, 256, 256);
+                        if(barWidth > 0)
+                            Gui.drawModalRectWithCustomSizedTexture(sclX+2, sclY+2, 0, 7, barWidth, 3, 256, 256);
 
-                        float fontScale = .65F;
+                        float fontScale = .5F;
                         GlStateManager.scale(fontScale, fontScale, fontScale);
-                        String s = "-> " + voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
-                        mc.fontRenderer.drawString(s, (sclX + 80) / fontScale - mc.fontRenderer.getStringWidth(s), (sclY - 10) / fontScale, barColor, true);
+                        String s = voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
+
+                        if(player.isSneaking()) {
+                            mc.fontRenderer.drawString(s, (sclX / fontScale)+4, (sclY / fontScale)-10, 65280, true);
+                        }
 
                         GlStateManager.color(1f, 1f, 1f);
 

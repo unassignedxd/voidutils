@@ -15,4 +15,6 @@ public interface IProxy {
     void postInit(FMLPostInitializationEvent event);
 
     void registerRenders(ItemStack stack, ModelResourceLocation location);
+
+    void scheduleSidedTask(Runnable runnable);
 }
