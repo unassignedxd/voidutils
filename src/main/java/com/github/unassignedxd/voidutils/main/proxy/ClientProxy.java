@@ -4,10 +4,12 @@ import com.github.unassignedxd.voidutils.main.events.ClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 
 public class ClientProxy implements IProxy {
@@ -30,6 +32,11 @@ public class ClientProxy implements IProxy {
     @Override
     public void registerRenders(ItemStack stack, ModelResourceLocation location) {
         ClientEvents.OBJECT_MODEL_REG.put(stack, location);
+    }
+
+    @SubscribeEvent
+    public void registerParticleTexture(ResourceLocation location) {
+        ClientEvents.PARTICLE_TEXTURES.add(location);
     }
 
     @Override

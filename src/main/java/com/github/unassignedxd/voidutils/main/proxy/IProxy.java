@@ -2,6 +2,7 @@ package com.github.unassignedxd.voidutils.main.proxy;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,6 +16,8 @@ public interface IProxy {
     void postInit(FMLPostInitializationEvent event);
 
     void registerRenders(ItemStack stack, ModelResourceLocation location);
+
+    void registerParticleTexture(ResourceLocation location);
 
     void scheduleSidedTask(Runnable runnable);
 }

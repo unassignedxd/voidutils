@@ -2,6 +2,7 @@ package com.github.unassignedxd.voidutils.main.proxy;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -26,6 +27,11 @@ public class ServerProxy implements IProxy {
 
     @Override
     public void registerRenders(ItemStack stack, ModelResourceLocation location) {
+
+    }
+
+    @Override
+    public void registerParticleTexture(ResourceLocation location) {
 
     }
 

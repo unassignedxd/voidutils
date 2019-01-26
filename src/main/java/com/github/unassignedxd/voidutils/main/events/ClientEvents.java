@@ -6,6 +6,7 @@ import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.init.IModObject;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
+import com.github.unassignedxd.voidutils.main.particles.ParticleHandler;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -21,16 +22,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class ClientEvents {
 
     // Will store all overlays that are to be displayed
     public static final ResourceLocation OVERLAYS = new ResourceLocation(VoidUtils.MOD_ID, "textures/gui/overlays.png");
+
+    // Stores all particle textures
+    public static HashSet<ResourceLocation> PARTICLE_TEXTURES = new HashSet<>();
+
+    // Stores all item models
+    public static HashMap<ItemStack, ModelResourceLocation> OBJECT_MODEL_REG = new HashMap<>();
+
 
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
@@ -88,7 +100,30 @@ public class ClientEvents {
         }
     }
 
-    public static HashMap<ItemStack, ModelResourceLocation> OBJECT_MODEL_REG = new HashMap<>();
+    @SubscribeEvent
+    public static void onRenderWorldLast(RenderWorldLastEvent event) {
+        ParticleHandler.renderParticles(event.getPartialTicks());
+    }
+
+    @SubscribeEvent
+    public static void onTextureStitch(TextureStitchEvent event) {
+        for(ResourceLocation loc : PARTICLE_TEXTURES) {
+            event.getMap().registerSprite(loc);
+        }
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (!mc.isGamePaused()) {
+                ParticleHandler.updateParticles();
+            }
+            if (mc.world == null) {
+                ParticleHandler.clearParticles();
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onModelRegistryEvent(ModelRegistryEvent event) {
