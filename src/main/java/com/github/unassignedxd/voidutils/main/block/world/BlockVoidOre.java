@@ -20,7 +20,6 @@ public class BlockVoidOre extends BlockBase {
         this.setHarvestLevel("pickaxe", 2);
     }
 
-
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return ModItems.VOID_SHARD;

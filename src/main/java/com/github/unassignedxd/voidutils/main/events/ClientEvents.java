@@ -39,6 +39,7 @@ public class ClientEvents {
             ScaledResolution res = event.getResolution();
             if (mc.player != null) {
                 EntityPlayer player = mc.player;
+
                 ItemStack goggles = ItemStack.EMPTY;
 
                 //todo baubles compat
@@ -55,6 +56,7 @@ public class ClientEvents {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(player.world.getChunk(player.getPosition()));
                     if (voidChunk != null && voidChunk.getVoidType() != null) {
                         int barWidth = MathHelper.ceil(((float) voidChunk.getVoidStored() / (float) voidChunk.getMaxVoidStored() * 40));
+
                         int sclX = (res.getScaledWidth() / 2) - 150;
                         int sclY = res.getScaledHeight() - 20;
 
@@ -72,14 +74,13 @@ public class ClientEvents {
 
                         float fontScale = .5F;
                         GlStateManager.scale(fontScale, fontScale, fontScale);
-                        String s = voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
 
+                        String s = voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
                         if(player.isSneaking()) {
                             mc.fontRenderer.drawString(s, (sclX / fontScale)+4, (sclY / fontScale)-10, 65280, true);
                         }
 
                         GlStateManager.color(1f, 1f, 1f);
-
                         GlStateManager.popMatrix();
                     }
                 }

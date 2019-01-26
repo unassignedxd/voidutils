@@ -21,7 +21,7 @@ public class NetworkManager {
     public static void init() {
         network = new SimpleNetworkWrapper(VoidUtils.MOD_ID);
 
-        registerMessage(PacketVoidChunk.Handler.class, PacketVoidChunk.class, Side.CLIENT);
+        registerMessage(PacketVoidChunk.Handler.class, PacketVoidChunk.class,  Side.CLIENT);
     }
 
     private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> handler, Class<REQ> message, Side side) {

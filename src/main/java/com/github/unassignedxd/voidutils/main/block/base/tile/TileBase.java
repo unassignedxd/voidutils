@@ -1,4 +1,4 @@
-package com.github.unassignedxd.voidutils.main.block.tile;
+package com.github.unassignedxd.voidutils.main.block.base.tile;
 
 import com.github.unassignedxd.voidutils.main.VoidConfig;
 import net.minecraft.block.Block;

@@ -1,7 +1,7 @@
 package com.github.unassignedxd.voidutils.main.block.base;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.block.tile.TileBase;
+import com.github.unassignedxd.voidutils.main.block.base.tile.TileBase;
 import com.github.unassignedxd.voidutils.main.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
