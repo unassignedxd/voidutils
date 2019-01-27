@@ -1,9 +1,9 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
 import com.github.unassignedxd.voidutils.main.events.ClientEvents;
-import com.github.unassignedxd.voidutils.main.particles.ParticleHandler;
-import com.github.unassignedxd.voidutils.main.particles.particle.base.EnumParticleType;
-import com.github.unassignedxd.voidutils.main.particles.particle.ParticleVoidHole;
+import com.github.unassignedxd.voidutils.main.client.particles.ParticleHandler;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.ParticleVoidHole;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;

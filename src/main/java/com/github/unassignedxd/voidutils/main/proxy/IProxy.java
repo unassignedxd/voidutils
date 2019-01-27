@@ -1,6 +1,6 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
-import com.github.unassignedxd.voidutils.main.particles.particle.base.EnumParticleType;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

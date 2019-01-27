@@ -1,4 +1,4 @@
-package com.github.unassignedxd.voidutils.main.particles;
+package com.github.unassignedxd.voidutils.main.client.particles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -71,7 +71,7 @@ public class ParticleHandler {
             GlStateManager.depthMask(true);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.disableBlend();
-            GlStateManager.alphaFunc(516, .1f); //reset func
+            GlStateManager.alphaFunc(516, .1f); //reset alpha func
             GlStateManager.popMatrix();
 
         }

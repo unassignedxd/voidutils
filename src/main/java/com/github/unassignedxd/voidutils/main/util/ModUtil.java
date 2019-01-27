@@ -1,7 +1,7 @@
 package com.github.unassignedxd.voidutils.main.util;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.particles.particle.base.EnumParticleType;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;

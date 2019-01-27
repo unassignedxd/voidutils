@@ -1,4 +1,4 @@
-package com.github.unassignedxd.voidutils.main.particles.particle.base;
+package com.github.unassignedxd.voidutils.main.client.particles.particle.base;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import net.minecraft.util.ResourceLocation;
