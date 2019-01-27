@@ -1,10 +1,13 @@
 package com.github.unassignedxd.voidutils.main.util;
 
+import com.github.unassignedxd.voidutils.main.VoidUtils;
+import com.github.unassignedxd.voidutils.main.particles.particle.base.EnumParticleType;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Vector3f;
 
 /**
  * Useful functions that can be used throughout my code
@@ -15,4 +18,22 @@ public final class ModUtil {
     public static <T> T getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability, @Nullable EnumFacing facing) {
         return provider != null && provider.hasCapability(capability, facing) ? provider.getCapability(capability, facing) : null;
     }
+
+    public static void spawnParticle(EnumParticleType particleType, float posX, float posY, float posZ, double motionX, double motionY, double motionZ, float alpha, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade){
+        VoidUtils.proxy.spawnParticle(particleType, posX, posY, posZ,
+                motionX, motionY, motionZ,
+                alpha, color, scale, maxAge, gravity, collision, fade);
+    }
+
+    public static void spawnParticleStream(EnumParticleType particleType, float startX, float startY, float startZ, float endX, float endY, float endZ, float speed, float alpha, int color, float scale){
+        Vector3f dir = new Vector3f(endX - startX, endY - startY, endZ - startZ);
+        if(dir.length() > 0) {
+            int maxAge = (int)(dir.length() / speed);
+            dir.normalize();
+            VoidUtils.proxy.spawnParticle(particleType, startX, startY, startZ,
+                    dir.x*speed, dir.y*speed, dir.z*speed,
+                    alpha, color, scale, maxAge, 0F, false, false);
+        }
+    }
+
 }
