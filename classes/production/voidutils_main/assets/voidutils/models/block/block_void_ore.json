@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "voidutils:blocks/block_void_ore"
+    }
+}
