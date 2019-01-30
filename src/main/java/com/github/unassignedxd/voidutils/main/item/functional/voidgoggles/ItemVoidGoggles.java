@@ -1,4 +1,4 @@
-package com.github.unassignedxd.voidutils.main.item.functional;
+package com.github.unassignedxd.voidutils.main.item.functional.voidgoggles;
 
 import com.github.unassignedxd.voidutils.main.item.base.ItemBase;
 import net.minecraft.entity.player.EntityPlayer;
