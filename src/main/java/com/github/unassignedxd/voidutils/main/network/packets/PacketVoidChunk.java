@@ -38,7 +38,7 @@ public class PacketVoidChunk implements IMessage {
         int chunkZ = buf.readInt();
         this.chunkPos = new ChunkPos(chunkX, chunkZ);
 
-        this.nodePos = BlockPos.fromLong(buf.readLong());
+        //this.nodePos = BlockPos.fromLong(buf.readLong());
 
         this.voidEnergyStored = buf.readInt();
         this.voidTypeID = buf.readInt();

@@ -25,40 +25,40 @@ public class RenderVoidNode extends TileEntitySpecialRenderer<TileVoidNode> {
             buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
             //south side [pos z] [parent x]
-            buf.pos(x-0.5f, y+0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x+0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x+0.5f, y+0.5f, z+0.5f).endVertex();
+            buf.pos(-0.25f, +0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(+0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(+0.25f, +0.25f, +0.25f).endVertex();
 
             //north side [neg z] [parent x]
-            buf.pos(x-0.5f, y+0.5f, z-0.5f).endVertex();
-            buf.pos(x-0.5f, y-0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y-0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y+0.5f, z-0.5f).endVertex();
+            buf.pos(-0.25f, +0.25f, -0.25f).endVertex();
+            buf.pos(-0.25f, -0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, -0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, +0.25f, -0.25f).endVertex();
 
             //east side [pos x] [parent z]
-            buf.pos(x+0.5f, y+0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y-0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x+0.5f, y+0.5f, z+0.5f).endVertex();
+            buf.pos(+0.25f, +0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, -0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(+0.25f, +0.25f, +0.25f).endVertex();
 
             //west side [neg x] [parent z]
-            buf.pos(x-0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y-0.5f, z-0.5f).endVertex();
-            buf.pos(x-0.5f, y+0.5f, z-0.5f).endVertex();
-            buf.pos(x-0.5f, y+0.5f, z+0.5f).endVertex();
+            buf.pos(-0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, -0.25f, -0.25f).endVertex();
+            buf.pos(-0.25f, +0.25f, -0.25f).endVertex();
+            buf.pos(-0.25f, +0.25f, +0.25f).endVertex();
 
             //top [pos y] [parent x & y]
-            buf.pos(x+0.5f, y+0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y+0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y+0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y+0.5f, z-0.5f).endVertex();
+            buf.pos(+0.25f, +0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, +0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, +0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, +0.25f, -0.25f).endVertex();
 
             //bottom [neg y] [parent x & y]
-            buf.pos(x+0.5f, y-0.5f, z-0.5f).endVertex();
-            buf.pos(x+0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y-0.5f, z+0.5f).endVertex();
-            buf.pos(x-0.5f, y-0.5f, z-0.5f).endVertex();
+            buf.pos(+0.25f, -0.25f, -0.25f).endVertex();
+            buf.pos(+0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, -0.25f, +0.25f).endVertex();
+            buf.pos(-0.25f, -0.25f, -0.25f).endVertex();
 
             tessy.draw();
 
