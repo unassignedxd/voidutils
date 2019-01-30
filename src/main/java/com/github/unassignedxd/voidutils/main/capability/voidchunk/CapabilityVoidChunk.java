@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
@@ -62,13 +63,25 @@ public class CapabilityVoidChunk {
 
         if(rD < .95) { //95%
             return VoidType.NORMAL;
-        } else if(rD < .975 && rD > .95){ //2.5&
+        } else if(rD < .975 && rD > .95){ //2.5%
             return VoidType.PURE;
-        } else if(rD <= 1 && rD > .975){ //2.5&
+        } else if(rD <= 1 && rD > .975){ //2.5%
             return VoidType.CORRUPTED;
         }
 
         return VoidType.NORMAL;
+    }
+
+    public static BlockPos getRandTypeNode(Chunk chunk, VoidType type) {
+        Random rand = chunk.getWorld().rand;
+
+        if(type.isHasPossibleNode()){
+            if(rand.nextDouble() < .25d) {
+                return ModUtil.getCentralBlockPos(chunk).up(5);
+            }
+        }
+
+        return null;
     }
 
 }

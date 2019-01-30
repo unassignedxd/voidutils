@@ -9,8 +9,6 @@ import net.minecraft.world.World;
 
 public class ParticleBase extends Particle {
 
-    public static final ResourceLocation LOC = new ResourceLocation(VoidUtils.MOD_ID, "particles/base");
-
     private final float partScale;
     private final boolean shouldFade;
 
@@ -33,9 +31,6 @@ public class ParticleBase extends Particle {
         float b = (color & 255) / 255F;
         this.setRBGColorF(r, g, b);
 
-        TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
-        this.setParticleTexture(textureMap.getAtlasSprite(LOC.toString()));
-
         this.particleAlpha = alpha;
         this.particleScale = this.partScale;
     }
@@ -54,9 +49,9 @@ public class ParticleBase extends Particle {
             this.move(this.motionX, this.motionY, this.motionZ);
 
             if (this.shouldFade) {
-                float lifeRatio = (float) this.particleAge / (float) this.particleMaxAge;
-                this.particleAlpha = 0.75F - (lifeRatio * 0.75F);
-                this.particleScale = this.partScale - (this.partScale * lifeRatio);
+                float r = (float) this.particleAge / (float) this.particleMaxAge;
+                this.particleAlpha = 0.75F - (r * 0.75F);
+                this.particleScale = this.partScale - (this.partScale * r);
             }
         }
     }

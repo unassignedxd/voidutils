@@ -100,12 +100,12 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void onRenderWorldLast(RenderWorldLastEvent event) {
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
         ParticleHandler.renderParticles(event.getPartialTicks());
     }
 
     @SubscribeEvent
-    public static void onTextureStitch(TextureStitchEvent event) {
+    public void onTextureStitch(TextureStitchEvent event) {
         for(ResourceLocation loc : PARTICLE_TEXTURES) {
             event.getMap().registerSprite(loc);
         }

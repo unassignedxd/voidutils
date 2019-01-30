@@ -118,7 +118,7 @@ public class BlockTileBase extends BlockContainer implements IModObject {
         this.updateRedstone(worldIn, pos);
     }
 
-    //Not actually deprecated --> I believe this is the case with other 'deprecated' functions. Can override, not call.
+    //Not actually deprecated --> Can override, not call. I believe this is the case with other 'deprecated' functions.
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         this.updateRedstone(worldIn, pos);

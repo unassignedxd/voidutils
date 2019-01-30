@@ -4,7 +4,7 @@ import com.github.unassignedxd.voidutils.main.VoidUtils;
 import net.minecraft.util.ResourceLocation;
 
 public enum EnumParticleType {
-    VOID_HOLE(1, new ResourceLocation(VoidUtils.MOD_ID, "void_hole_particle"));
+    VOID_NODE(1, new ResourceLocation(VoidUtils.MOD_ID, "void_node_particle"));
 
     private int id;
     private ResourceLocation loc;

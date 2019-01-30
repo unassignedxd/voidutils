@@ -1,5 +1,6 @@
 package com.github.unassignedxd.voidutils.main.client.particles;
 
+import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -13,13 +14,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 @SideOnly(Side.CLIENT)
 public class ParticleHandler {
 
-    private static final ArrayList<Particle> CUR_PARTICLES = new ArrayList<>();
+    private static final ConcurrentSet<Particle> CUR_PARTICLES = new ConcurrentSet<>();
 
     public static void spawnParticle(Supplier<Particle> supplier, double x, double y, double z, int viewRange) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -78,10 +78,12 @@ public class ParticleHandler {
     }
 
     public static void updateParticles() {
-        for(Particle particle : CUR_PARTICLES) {
-            particle.onUpdate();
-            if(!particle.isAlive())
-                CUR_PARTICLES.remove(particle);
+        if(!CUR_PARTICLES.isEmpty()) {
+            for(Particle particle : CUR_PARTICLES) {
+                particle.onUpdate();
+                if(!particle.isAlive())
+                    CUR_PARTICLES.remove(particle);
+            }
         }
     }
 

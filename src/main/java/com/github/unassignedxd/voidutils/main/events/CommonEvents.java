@@ -1,14 +1,19 @@
 package com.github.unassignedxd.voidutils.main.events;
 
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
+import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.capability.CapabilityProviderSerializable;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.VoidChunk;
 import com.github.unassignedxd.voidutils.main.network.NetworkManager;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,8 +28,25 @@ public class CommonEvents {
     public static void onCapabilityAttachToChunk(AttachCapabilitiesEvent<Chunk> event) {
         Chunk chunk = event.getObject();
         if (chunk != null) {
-            VoidChunk voidChunk = new VoidChunk(chunk, CapabilityVoidChunk.getVoidTypeWithRandoms(chunk.getWorld()), 5000, 10000);
+            VoidType type = CapabilityVoidChunk.getVoidTypeWithRandoms(chunk.getWorld());
+            VoidChunk voidChunk = new VoidChunk(chunk, type, CapabilityVoidChunk.getRandTypeNode(chunk, type), 5000, 10000);
+
             event.addCapability(CapabilityVoidChunk.ID_CHUNK, new CapabilityProviderSerializable<>(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, CapabilityVoidChunk.DEFAULT_FACING, voidChunk));
+        }
+    }
+
+    public static void onChunkLoad(ChunkEvent.Load event) {
+        Chunk chunk = event.getChunk();
+
+        IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
+        if(voidChunk != null) {
+            BlockPos nodePos = voidChunk.getNodePos();
+            if(nodePos != null) {
+                IBlockState state = chunk.getWorld().getBlockState(nodePos);
+                if(state != ModBlocks.VOID_NODE.getDefaultState()) {
+                    chunk.getWorld().setBlockState(nodePos, ModBlocks.VOID_NODE.getDefaultState());
+                }
+            }
         }
     }
 

@@ -1,14 +1,17 @@
 package com.github.unassignedxd.voidutils.main.proxy;
 
+import com.github.unassignedxd.voidutils.main.block.functional.voidnode.RenderVoidNode;
+import com.github.unassignedxd.voidutils.main.block.functional.voidnode.TileVoidNode;
 import com.github.unassignedxd.voidutils.main.events.ClientEvents;
 import com.github.unassignedxd.voidutils.main.client.particles.ParticleHandler;
 import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
-import com.github.unassignedxd.voidutils.main.client.particles.particle.ParticleVoidHole;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.ParticleVoidNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -20,6 +23,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileVoidNode.class, new RenderVoidNode());
     }
 
     @Override
@@ -46,8 +50,8 @@ public class ClientProxy implements IProxy {
     public void spawnParticle(EnumParticleType particleType, double posX, double posY, double posZ, double motionX, double motionY, double motionZ, float alpha, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade) {
         Minecraft mc = Minecraft.getMinecraft();
         switch (particleType) {
-            case VOID_HOLE:
-                ParticleHandler.spawnParticle(() -> new ParticleVoidHole(mc.world,
+            case VOID_NODE:
+                ParticleHandler.spawnParticle(() -> new ParticleVoidNode(mc.world,
                         posX, posY, posZ,
                         motionX, motionY, motionZ,
                         alpha, color, scale, maxAge, gravity, collision, fade), posX, posY, posZ, 32);

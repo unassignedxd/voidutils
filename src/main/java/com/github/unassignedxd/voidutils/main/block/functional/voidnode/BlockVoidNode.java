@@ -1,12 +1,12 @@
 package com.github.unassignedxd.voidutils.main.block.functional.voidnode;
 
-import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
 import com.github.unassignedxd.voidutils.main.block.base.BlockTileBase;
+import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
+import com.github.unassignedxd.voidutils.main.util.ModUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,8 +28,17 @@ public class BlockVoidNode extends BlockTileBase {
         TileEntity tile = worldIn.getTileEntity(pos);
         if(tile instanceof TileVoidNode) {
             TileVoidNode voidNode = (TileVoidNode)tile;
-            if(voidNode.getType() != null){ //todo custom fx
-                worldIn.spawnParticle(EnumParticleTypes.CRIT_MAGIC, pos.getX()+.5f, pos.getY()+.5f, pos.getZ()+.5f, 0.0D, 0.0D, 0.0D, new int[0]);
+                if(voidNode.getType() != null){
+                    int c = voidNode.getType().getDecimalColor();
+                    for(int i = 0; i < 10; i ++) {
+                        float interX = (pos.getX() + .5f) + ModUtil.getRangedFloat(rand, -1, 1);
+                        float interY = (pos.getY() + .5f) + ModUtil.getRangedFloat(rand, -1, 1);
+                        float interZ = (pos.getZ() + .5f) + ModUtil.getRangedFloat(rand, -1, 1);
+
+                        ModUtil.spawnParticleStream(EnumParticleType.VOID_NODE, interX, interY, interZ,
+                                pos.getX()+.5f,pos.getY()+.5f,pos.getZ()+.5f,
+                                0.01f, 11001100, c, 1);
+                }
             }
         }
 

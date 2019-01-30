@@ -4,7 +4,9 @@ import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
 import com.github.unassignedxd.voidutils.main.block.base.tile.TileBase;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 public class TileVoidNode extends TileBase {
@@ -21,6 +23,18 @@ public class TileVoidNode extends TileBase {
             if(chunk.hasCapability(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, null)) {
                 IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
                 this.nodeType = voidChunk.getVoidType();
+            }
+        }
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        if(!this.world.isRemote) {
+            BlockPos downPos = this.getPos().down();
+            if(world.getBlockState(downPos) == Blocks.AIR.getDefaultState()) {
+                //set a bool to output redstone.
             }
         }
     }

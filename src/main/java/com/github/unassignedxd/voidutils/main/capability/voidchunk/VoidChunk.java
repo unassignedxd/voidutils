@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import javax.annotation.Nullable;
+
 public class VoidChunk implements IVoidChunk {
 
     protected Chunk chunk;
@@ -18,11 +20,14 @@ public class VoidChunk implements IVoidChunk {
     protected int voidEnergy;
     protected int capacity;
 
-    private boolean hasNode = false; //have a node in corrupted / pure areas, used in crafting and void equivalence trading.
+    protected BlockPos nodePos; //if this were to have a node, what pos would it be at?
 
-    public VoidChunk(Chunk chunk, VoidType voidType, int voidEnergy, int capacity) {
+    private boolean hasNode = false;
+
+    public VoidChunk(Chunk chunk, VoidType voidType, @Nullable BlockPos nodePos, int voidEnergy, int capacity) {
         this.chunk = chunk;
         this.voidType = voidType;
+        this.nodePos = nodePos;
         this.voidEnergy = voidEnergy;
         this.capacity = capacity;
     }
@@ -40,7 +45,7 @@ public class VoidChunk implements IVoidChunk {
     }
 
     public IMessage packetFactory() {
-        return new PacketVoidChunk(this.chunk, this.voidEnergy, this.voidType.getId());
+        return new PacketVoidChunk(this.chunk, this.nodePos, this.voidEnergy, this.voidType.getId());
     }
 
     @Override
@@ -56,6 +61,17 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public VoidType setVoidType(VoidType voidType) {
         return this.voidType = voidType;
+    }
+
+    @Nullable
+    @Override
+    public BlockPos getNodePos() {
+        return this.nodePos;
+    }
+
+    @Override
+    public BlockPos setNodePos(BlockPos set) {
+        return this.nodePos = set;
     }
 
     @Override

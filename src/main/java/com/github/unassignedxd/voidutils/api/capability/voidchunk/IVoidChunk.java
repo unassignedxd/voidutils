@@ -1,6 +1,9 @@
 package com.github.unassignedxd.voidutils.api.capability.voidchunk;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
+
+import javax.annotation.Nullable;
 
 public interface IVoidChunk {
 
@@ -11,6 +14,11 @@ public interface IVoidChunk {
     VoidType getVoidType();
 
     VoidType setVoidType(VoidType voidType);
+
+    @Nullable
+    BlockPos getNodePos();
+
+    BlockPos setNodePos(BlockPos set);
 
     int getVoidStored();
 
