@@ -21,13 +21,13 @@ public class ItemTester extends ItemBase {
         if(!worldIn.isRemote) {
             if(playerIn != null) {
                 Chunk chunk = worldIn.getChunk(playerIn.getPosition());
-                if(chunk.hasCapability(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, null)) {
+                if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
 
                     if(playerIn.isSneaking()) {
-                        voidChunk.extractVoid(100, false);
+                        voidChunk.extractVoidEnergy(100, false);
                     } else {
-                        voidChunk.receiveVoid(100, false);
+                        voidChunk.receiveVoidEnergy(100, false);
                     }
 
                 }

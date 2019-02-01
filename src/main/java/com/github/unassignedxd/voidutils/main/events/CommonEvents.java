@@ -1,20 +1,16 @@
 package com.github.unassignedxd.voidutils.main.events;
 
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidType;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
-import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
-import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.capability.CapabilityProviderSerializable;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.VoidChunk;
-import com.github.unassignedxd.voidutils.main.network.NetworkManager;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
+import com.github.unassignedxd.voidutils.main.util.CapabilityUtil;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -25,39 +21,44 @@ import java.util.Iterator;
 public class CommonEvents {
 
     @SubscribeEvent
-    public static void onCapabilityAttachToChunk(AttachCapabilitiesEvent<Chunk> event) {
+    public static void onAttachCapabilityToChunk(AttachCapabilitiesEvent<Chunk> event) {
         Chunk chunk = event.getObject();
-        if (chunk != null) {
-            VoidType type = CapabilityVoidChunk.getVoidTypeWithRandoms(chunk.getWorld());
-            VoidChunk voidChunk = new VoidChunk(chunk, type, CapabilityVoidChunk.getRandTypeNode(chunk, type), 5000, 10000);
-
-            event.addCapability(CapabilityVoidChunk.ID_CHUNK, new CapabilityProviderSerializable<>(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, CapabilityVoidChunk.DEFAULT_FACING, voidChunk));
-        }
-    }
-
-    public static void onChunkLoad(ChunkEvent.Load event) {
-        Chunk chunk = event.getChunk();
-
-        IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
-        if(voidChunk != null) {
-            BlockPos nodePos = voidChunk.getNodePos();
-            if(nodePos != null) {
-                IBlockState state = chunk.getWorld().getBlockState(nodePos);
-                if(state != ModBlocks.VOID_NODE.getDefaultState()) {
-                    chunk.getWorld().setBlockState(nodePos, ModBlocks.VOID_NODE.getDefaultState());
-                }
-            }
+        if(chunk != null) {
+            chunk.getWorld().profiler.startSection(VoidUtils.MOD_ID + ":attachCapabilities");
+            EnumVoidType voidType = CapabilityUtil.getVoidTypeWithRandoms(chunk.getWorld());
+            IVoidChunk voidChunk = new VoidChunk(chunk, voidType, CapabilityUtil.getHasNaturalNodeRandom(voidType, chunk.getWorld()), 5000, 10000);
+            event.addCapability(CapabilityVoidChunk.ID, new CapabilityProviderSerializable<>(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null, voidChunk));
+            chunk.getWorld().profiler.endSection();
         }
     }
 
     @SubscribeEvent
-    public static void onChunkWatch(ChunkWatchEvent event) {
-        Chunk chunk = event.getChunkInstance();
+    public static void onChunkLoad(ChunkEvent.Load event) {
+        Chunk chunk = event.getChunk();
         if(chunk != null) {
-            if(!chunk.getWorld().isRemote && chunk.hasCapability(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, null)) {
-                VoidChunk voidChunk = (VoidChunk)CapabilityVoidChunk.getVoidChunk(chunk);
-                NetworkManager.sendToPlayer(event.getPlayer(), voidChunk.packetFactory());
+            chunk.getWorld().profiler.startSection(VoidUtils.MOD_ID + ":onChunkLoad");
+            if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
+                IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
+                if(voidChunk != null) {
+                    voidChunk.onChunkLoad();
+                }
             }
+            chunk.getWorld().profiler.endSection();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkUnload(ChunkEvent.Unload event) {
+        Chunk chunk = event.getChunk();
+        if(chunk != null) {
+            chunk.getWorld().profiler.startSection(VoidUtils.MOD_ID + ":onChunkUnload");
+            if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
+                IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
+                if(voidChunk != null) {
+                    voidChunk.onChunkUnload();
+                }
+            }
+            chunk.getWorld().profiler.endSection();
         }
     }
 
@@ -69,7 +70,7 @@ public class CommonEvents {
                 Iterator<Chunk> loadedChunks = event.world.getPersistentChunkIterable(((WorldServer) event.world).getPlayerChunkMap().getChunkIterator());
                 while(loadedChunks.hasNext()){
                     Chunk chunk = loadedChunks.next();
-                    if(chunk.hasCapability(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, null)) {
+                    if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
                         IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
                         voidChunk.update();
                     }

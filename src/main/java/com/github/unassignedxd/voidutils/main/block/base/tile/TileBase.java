@@ -34,7 +34,7 @@ public class TileBase extends TileEntity implements ITickable {
     public void update() { //always call super method from impls!
         if (shouldUpdate()) {
             ticksElasped++;
-            if (shouldSendData()) {
+            if (shouldSendData() && !this.world.isRemote) {
                 if (ticksElasped % getIntervalData() == 0) {
                     this.sendData();
                 }

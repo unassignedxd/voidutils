@@ -9,25 +9,32 @@ public interface IVoidChunk {
 
     void update();
 
-    Chunk getVoidChunk();
+    void onChunkLoad();
 
-    VoidType getVoidType();
+    void onChunkUnload();
 
-    VoidType setVoidType(VoidType voidType);
+    Chunk getChunk();
+
+    EnumVoidType getVoidType();
+
+    void setVoidType(EnumVoidType type);
 
     @Nullable
     BlockPos getNodePos();
 
-    BlockPos setNodePos(BlockPos set);
+    void setNodePos(BlockPos set);
 
-    int getVoidStored();
+    boolean getHasNaturalNode();
 
-    int setVoidStored(int set);
+    void setHasNaturalNode(boolean set);
 
-    int getMaxVoidStored();
+    int receiveVoidEnergy(int amount, boolean simulate);
 
-    int extractVoid(int amount, boolean sim);
+    int extractVoidEnergy(int amount, boolean simulate);
 
-    int receiveVoid(int amount, boolean sim);
+    int getVoidEnergy();
 
+    void setVoidEnergy(int set);
+
+    int getMaxVoidEnergy();
 }

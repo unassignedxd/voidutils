@@ -1,12 +1,11 @@
 package com.github.unassignedxd.voidutils.main.network.packets;
 
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidType;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
-import com.github.unassignedxd.voidutils.api.capability.voidchunk.VoidType;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -21,14 +20,16 @@ public class PacketVoidChunk implements IMessage {
     public PacketVoidChunk() {}
 
     public ChunkPos chunkPos;
-    public BlockPos nodePos;
-    public int voidEnergyStored;
+
+    public boolean hasNaturalNode;
+
+    public int voidEnergy;
     public int voidTypeID;
 
-    public PacketVoidChunk(Chunk chunk, BlockPos nodePos, int voidEnergyStored, int voidTypeID) {
+    public PacketVoidChunk(Chunk chunk, boolean hasNaturalNode, int voidEnergyStored, int voidTypeID) {
         this.chunkPos = chunk.getPos();
-        this.nodePos = nodePos;
-        this.voidEnergyStored = voidEnergyStored;
+        this.hasNaturalNode = hasNaturalNode;
+        this.voidEnergy = voidEnergyStored;
         this.voidTypeID = voidTypeID;
     }
 
@@ -37,10 +38,8 @@ public class PacketVoidChunk implements IMessage {
         int chunkX = buf.readInt();
         int chunkZ = buf.readInt();
         this.chunkPos = new ChunkPos(chunkX, chunkZ);
-
-        //this.nodePos = BlockPos.fromLong(buf.readLong());
-
-        this.voidEnergyStored = buf.readInt();
+        this.hasNaturalNode = buf.readBoolean();
+        this.voidEnergy = buf.readInt();
         this.voidTypeID = buf.readInt();
     }
 
@@ -48,11 +47,8 @@ public class PacketVoidChunk implements IMessage {
     public void toBytes(ByteBuf buf) {
         buf.writeInt(chunkPos.x);
         buf.writeInt(chunkPos.z);
-
-       // if(this.nodePos != null)
-        //    buf.writeLong(nodePos.toLong());
-
-        buf.writeInt(voidEnergyStored);
+        buf.writeBoolean(hasNaturalNode);
+        buf.writeInt(voidEnergy);
         buf.writeInt(voidTypeID);
     }
 
@@ -65,13 +61,12 @@ public class PacketVoidChunk implements IMessage {
                 World world = Minecraft.getMinecraft().world;
                 if(world != null) {
                     Chunk chunk = world.getChunk(packet.chunkPos.x, packet.chunkPos.z);
-                    if(chunk.hasCapability(CapabilityVoidChunk.VOID_CHUNK_CAPABILITY, null)){
+                    if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)){
                         IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
 
-                        voidChunk.setNodePos(packet.nodePos);
-
-                        voidChunk.setVoidStored(packet.voidEnergyStored);
-                        voidChunk.setVoidType(VoidType.getVoidTypeFromID(packet.voidTypeID));
+                        voidChunk.setVoidEnergy(packet.voidEnergy);
+                        voidChunk.setVoidType(EnumVoidType.getVoidTypeByID(packet.voidTypeID));
+                        voidChunk.setHasNaturalNode(packet.hasNaturalNode);
                     }
                 }
             });

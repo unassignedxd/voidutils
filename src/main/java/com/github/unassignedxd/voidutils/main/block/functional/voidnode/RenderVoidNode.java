@@ -5,9 +5,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderVoidNode extends TileEntitySpecialRenderer<TileVoidNode> {
+
+    public static int sphereIdOut;
+    public static int sphereIdIn;
 
     @Override
     public void render(TileVoidNode te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -21,6 +25,7 @@ public class RenderVoidNode extends TileEntitySpecialRenderer<TileVoidNode> {
 
             GlStateManager.alphaFunc(GL11.GL_ALWAYS, 0);
             GlStateManager.translate(x+.5f, y+.5f, z+.5f);
+            GlStateManager.rotate(((te.getWorld().getWorldTime() / (float).1) % 360), 1, 0, 1);
 
             buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 

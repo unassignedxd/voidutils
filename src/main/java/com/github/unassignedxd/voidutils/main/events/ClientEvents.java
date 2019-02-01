@@ -66,7 +66,7 @@ public class ClientEvents {
                 if (!goggles.isEmpty()) {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(player.world.getChunk(player.getPosition()));
                     if (voidChunk != null && voidChunk.getVoidType() != null) {
-                        int barWidth = MathHelper.ceil(((float) voidChunk.getVoidStored() / (float) voidChunk.getMaxVoidStored() * 40));
+                        int barWidth = MathHelper.ceil(((float) voidChunk.getVoidEnergy() / (float) voidChunk.getMaxVoidEnergy() * 40));
 
                         int sclX = (res.getScaledWidth() / 2) - 150;
                         int sclY = res.getScaledHeight() - 20;
@@ -77,7 +77,7 @@ public class ClientEvents {
                         GlStateManager.color(1f, 1f, 1f);
                         Gui.drawModalRectWithCustomSizedTexture(sclX, sclY, 0, 0, 43, 7, 256, 256);
 
-                        int barColor = voidChunk.getVoidType().getDecimalColor();
+                        int barColor = voidChunk.getVoidType().getColor();
                         GlStateManager.color((barColor >> 16 & 255) / 255f, (barColor >> 8 & 255) / 255f, (barColor & 255) / 255f);
 
                         if(barWidth > 0)
@@ -86,7 +86,7 @@ public class ClientEvents {
                         float fontScale = .5F;
                         GlStateManager.scale(fontScale, fontScale, fontScale);
 
-                        String s = voidChunk.getVoidStored() + "/" + voidChunk.getMaxVoidStored() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
+                        String s = voidChunk.getVoidEnergy() + "/" + voidChunk.getMaxVoidEnergy() + " | " + voidChunk.getVoidType().getId(); //todo make this only view w/ void watch
                         if(player.isSneaking()) {
                             mc.fontRenderer.drawString(s, (sclX / fontScale)+4, (sclY / fontScale)-10, 65280, true);
                         }

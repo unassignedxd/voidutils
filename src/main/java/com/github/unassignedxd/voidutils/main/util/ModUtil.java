@@ -2,13 +2,9 @@ package com.github.unassignedxd.voidutils.main.util;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.Random;
 
@@ -16,11 +12,6 @@ import java.util.Random;
  * Useful functions that can be used throughout my code
  */
 public final class ModUtil {
-
-    @Nullable
-    public static <T> T getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability, @Nullable EnumFacing facing) {
-        return provider != null && provider.hasCapability(capability, facing) ? provider.getCapability(capability, facing) : null;
-    }
 
     public static double getRangedDouble(Random rand, double min, double max) {
         return (min + rand.nextDouble() * (max - min));
@@ -30,11 +21,11 @@ public final class ModUtil {
         return (min + rand.nextFloat() * (max - min));
     }
 
-    public static BlockPos getCentralBlockPos(Chunk chunk) {
+    public static BlockPos getNodePosFromChunk(Chunk chunk) {
         int x = (chunk.x << 4) + 8;
+        int y = chunk.getHeightValue(chunk.x & 15, chunk.z & 15);
         int z = (chunk.z << 4) + 8;
-        int y = chunk.getWorld().getHeight(x, z);
-        return new BlockPos(x, y, z);
+        return new BlockPos(x, y, z).up(5);
     }
 
     public static void spawnParticle(EnumParticleType particleType, float posX, float posY, float posZ, double motionX, double motionY, double motionZ, float alpha, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade){
