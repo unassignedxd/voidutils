@@ -6,6 +6,7 @@ import com.github.unassignedxd.voidutils.main.init.ObjectRegistryHandler;
 import com.github.unassignedxd.voidutils.main.item.ModItems;
 import com.github.unassignedxd.voidutils.main.network.NetworkManager;
 import com.github.unassignedxd.voidutils.main.proxy.IProxy;
+import com.github.unassignedxd.voidutils.main.recipe.ModRecipes;
 import com.github.unassignedxd.voidutils.main.world.WorldOreGenerator;
 import com.github.unassignedxd.voidutils.main.world.WorldStructureGenerator;
 import net.minecraft.creativetab.CreativeTabs;
@@ -67,6 +68,8 @@ public class VoidUtils {
 
         new WorldOreGenerator();
         new WorldStructureGenerator();
+
+        ModRecipes.init();
 
         ObjectRegistryHandler.init(event);
         proxy.init(event);

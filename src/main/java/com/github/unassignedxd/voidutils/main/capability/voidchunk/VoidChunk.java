@@ -58,7 +58,7 @@ public class VoidChunk implements IVoidChunk {
         if(this.hasNaturalNode && nodePos == null) {
             this.nodePos = new BlockPos(
                     (this.chunk.x << 4) + 8,
-                    chunk.getHeightValue(chunk.x & 15, chunk.z & 15) + 5,
+                    this.chunk.getHeightValue(8, 8),
                     (this.chunk.z << 4) + 8
             );
 
