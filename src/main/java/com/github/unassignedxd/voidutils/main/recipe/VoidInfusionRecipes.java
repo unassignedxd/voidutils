@@ -11,6 +11,6 @@ public class VoidInfusionRecipes {
 
     public static void initVoidRecipes() {
         new VoidInfusionRecipe(new ResourceLocation("test"),
-                Arrays.asList(new ItemStack(Items.STICK)), new ItemStack(Items.DIAMOND), 0);
+                Arrays.asList(), new ItemStack(Items.DIAMOND), 0).register();
     }
 }

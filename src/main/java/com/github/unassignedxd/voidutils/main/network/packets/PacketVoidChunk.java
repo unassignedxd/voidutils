@@ -1,6 +1,6 @@
 package com.github.unassignedxd.voidutils.main.network.packets;
 
-import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidType;
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidTypes;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
@@ -64,8 +64,8 @@ public class PacketVoidChunk implements IMessage {
                     if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)){
                         IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
 
-                        voidChunk.setVoidEnergy(packet.voidEnergy);
-                        voidChunk.setVoidType(EnumVoidType.getVoidTypeByID(packet.voidTypeID));
+                        voidChunk.setVoidStored(packet.voidEnergy);
+                        voidChunk.setVoidType(EnumVoidTypes.getVoidTypeByID(packet.voidTypeID));
                         voidChunk.setHasNaturalNode(packet.hasNaturalNode);
                     }
                 }

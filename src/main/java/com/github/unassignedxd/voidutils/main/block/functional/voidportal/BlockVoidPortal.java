@@ -10,5 +10,4 @@ public class BlockVoidPortal extends BlockTileBase {
         super("void_portal", Material.IRON, TileVoidPortal.class, "void_portal");
     }
 
-
 }

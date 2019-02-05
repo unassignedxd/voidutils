@@ -29,7 +29,7 @@ public class BlockVoidNode extends BlockTileBase {
         if(tile instanceof TileVoidNode) {
             TileVoidNode voidNode = (TileVoidNode)tile;
                 if(voidNode.getVoidChunk() != null){
-                    int c = voidNode.getVoidChunk().getVoidType().getColor();
+                    int c = voidNode.getVoidChunk().getVoidType().getDecimalColor();
                     for(int i = 0; i < 5; i ++) {
                         float interX = (pos.getX() + .5f) + ModUtil.getRangedFloat(rand, -1, 1);
                         float interY = (pos.getY() + .5f) + ModUtil.getRangedFloat(rand, -1, 1);

@@ -2,10 +2,13 @@ package com.github.unassignedxd.voidutils.main.util;
 
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.client.particles.particle.base.EnumParticleType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
 import javax.vecmath.Vector3f;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,6 +29,24 @@ public final class ModUtil {
         int y = chunk.getHeightValue(chunk.x & 15, chunk.z & 15);
         int z = (chunk.z << 4) + 8;
         return new BlockPos(x, y, z).up(5);
+    }
+
+    public static boolean areItemStackListsEqual(List<ItemStack> parentList, ArrayList<ItemStack> given) {
+        boolean used[] = new boolean[parentList.size()];
+        int matches = 0;
+
+        for(int i = 0; i < parentList.size(); i++) {
+            for(int z = 0; z < given.size(); z++) {
+                if(!used[i]){
+                    if(ItemStack.areItemsEqual(parentList.get(i), given.get(z))) {
+                        matches++;
+                        used[i] = true;
+                    }
+                }
+            }
+        }
+
+        return matches == parentList.size();
     }
 
     public static void spawnParticle(EnumParticleType particleType, float posX, float posY, float posZ, double motionX, double motionY, double motionZ, float alpha, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade){

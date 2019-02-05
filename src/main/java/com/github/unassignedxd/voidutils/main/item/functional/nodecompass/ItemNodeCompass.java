@@ -3,7 +3,6 @@ package com.github.unassignedxd.voidutils.main.item.functional.nodecompass;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.item.base.ItemBase;
-import com.github.unassignedxd.voidutils.main.util.ModUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -34,7 +33,7 @@ public class ItemNodeCompass extends ItemBase {
                     if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
                         IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
                         if(voidChunk.getHasNaturalNode()){
-                            BlockPos pos = voidChunk.getNodePos();
+                            BlockPos pos = voidChunk.getNodePosition();
                             if(pos != null) {
                                 player.sendMessage(new TextComponentString("Node found at: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()));
                                 break;

@@ -1,108 +1,82 @@
 package com.github.unassignedxd.voidutils.main.capability.voidchunk;
 
-import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidType;
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidTypes;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
-import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.network.NetworkManager;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-
-import javax.annotation.Nullable;
 
 public class VoidChunk implements IVoidChunk {
 
     protected final Chunk chunk;
+    protected EnumVoidTypes voidType;
 
-    protected EnumVoidType voidType;
     protected int voidEnergy;
     protected int maxVoidEnergy;
 
-    protected BlockPos nodePos;
     protected boolean hasNaturalNode;
+    protected BlockPos nodePos;
 
     private boolean shouldSendData = false;
 
-    public VoidChunk(Chunk chunk, EnumVoidType voidType, boolean hasNaturalNode, int voidEnergy, int maxVoidEnergy) {
+    public VoidChunk(Chunk chunk, EnumVoidTypes voidType, int voidEnergy, int maxVoidEnergy) {
         this.chunk = chunk;
         this.voidType = voidType;
-        this.hasNaturalNode = hasNaturalNode;
         this.voidEnergy = voidEnergy;
         this.maxVoidEnergy = maxVoidEnergy;
+
+        if(voidType.hasPossibleNaturalNode) {
+            if(chunk.getWorld().rand.nextDouble() < .25f){
+                this.hasNaturalNode = true;
+            }
+        }
     }
 
     @Override
-    public void update() {
-        World world = chunk.getWorld();
-
-        if(nodePos != null){
-            if(world.getBlockState(nodePos) != ModBlocks.VOID_NODE.getDefaultState()) {
-                this.setHasNaturalNode(false);
-                VoidUtils.logger.info("Possible node destruction at " + nodePos.getX() + " " + nodePos.getY() + " " + nodePos.getZ());
-                this.nodePos = null;
-                this.shouldSendData = true;
-            }
-        }
-
-        if (this.shouldSendData) {
-            NetworkManager.sendToAllLoaded(chunk.getWorld(), new BlockPos(this.chunk.x << 4, 0, this.chunk.z << 4), this.voidPacketFactory());
+    public void onUpdate() {
+        if(this.shouldSendData){
+            NetworkManager.sendToAllLoaded(this.chunk.getWorld(), new BlockPos(chunk.x << 4, 0, chunk.z << 4), voidPacketFactory());
             this.shouldSendData = false;
         }
     }
 
     @Override
-    public void onChunkLoad() {
-        if(this.hasNaturalNode && nodePos == null) {
-            this.nodePos = new BlockPos(
-                    (this.chunk.x << 4) + 8,
-                    this.chunk.getHeightValue(8, 8),
-                    (this.chunk.z << 4) + 8
-            );
-
-            if(chunk.getWorld().getBlockState(nodePos) != ModBlocks.VOID_NODE.getDefaultState()) {
-                chunk.getWorld().setBlockState(nodePos, ModBlocks.VOID_NODE.getDefaultState());
-                VoidUtils.logger.info("Spawned natural node at " + nodePos.getX() + " " + nodePos.getY() + " " + nodePos.getZ());
+    public void onChunkLoad(ChunkEvent.Load event) {
+        if(this.hasNaturalNode && this.nodePos == null) {
+            this.nodePos = new BlockPos(this.chunk.x << 4, this.chunk.getHeightValue(8, 8), this.chunk.z << 4);
+            if(this.chunk.getWorld().getBlockState(this.nodePos) != ModBlocks.VOID_NODE.getDefaultState()) {
+                this.chunk.getWorld().setBlockState(this.nodePos, ModBlocks.VOID_NODE.getDefaultState());
             }
         }
     }
 
     @Override
-    public void onChunkUnload() {
+    public void onChunkUnload(ChunkEvent.Unload event) {
 
     }
 
+    @Override
     public IMessage voidPacketFactory() {
         return new PacketVoidChunk(this.chunk, this.hasNaturalNode, this.voidEnergy, this.voidType.getId());
     }
 
     @Override
-    public Chunk getChunk() {
+    public Chunk getAttachedChunk() {
         return this.chunk;
     }
 
     @Override
-    public EnumVoidType getVoidType() {
+    public EnumVoidTypes getVoidType() {
         return this.voidType;
     }
 
     @Override
-    public void setVoidType(EnumVoidType type) {
+    public void setVoidType(EnumVoidTypes type) {
         this.voidType = type;
-        this.shouldSendData = true;
-    }
-
-    @Nullable
-    @Override
-    public BlockPos getNodePos() {
-        return this.nodePos;
-    }
-
-    @Override
-    public void setNodePos(BlockPos set) {
-        this.nodePos = set;
     }
 
     @Override
@@ -113,6 +87,31 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public void setHasNaturalNode(boolean set) {
         this.hasNaturalNode = set;
+    }
+
+    @Override
+    public BlockPos getNodePosition() {
+        return this.nodePos;
+    }
+
+    @Override
+    public void setNodePosition(BlockPos nodePosition) {
+        this.nodePos = nodePosition;
+    }
+
+    @Override
+    public int getVoidStored() {
+        return this.voidEnergy;
+    }
+
+    @Override
+    public void setVoidStored(int set) {
+        this.voidEnergy = set;
+    }
+
+    @Override
+    public int getMaxVoidStored() {
+        return this.maxVoidEnergy;
     }
 
     @Override
@@ -132,23 +131,7 @@ public class VoidChunk implements IVoidChunk {
             this.voidEnergy += rec;
             this.shouldSendData = true;
         }
-
         return rec;
     }
 
-    @Override
-    public int getVoidEnergy() {
-        return this.voidEnergy;
-    }
-
-    @Override
-    public void setVoidEnergy(int set) {
-        this.voidEnergy = set;
-        this.shouldSendData = true;
-    }
-
-    @Override
-    public int getMaxVoidEnergy() {
-        return this.maxVoidEnergy;
-    }
 }

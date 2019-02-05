@@ -2,39 +2,40 @@ package com.github.unassignedxd.voidutils.api.capability.voidchunk;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-
-import javax.annotation.Nullable;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public interface IVoidChunk {
 
-    void update();
+    void onUpdate();
 
-    void onChunkLoad();
+    void onChunkLoad(ChunkEvent.Load event);
 
-    void onChunkUnload();
+    void onChunkUnload(ChunkEvent.Unload event);
 
-    Chunk getChunk();
+    IMessage voidPacketFactory();
 
-    EnumVoidType getVoidType();
+    Chunk getAttachedChunk();
 
-    void setVoidType(EnumVoidType type);
+    EnumVoidTypes getVoidType();
 
-    @Nullable
-    BlockPos getNodePos();
-
-    void setNodePos(BlockPos set);
+    void setVoidType(EnumVoidTypes type);
 
     boolean getHasNaturalNode();
 
     void setHasNaturalNode(boolean set);
 
-    int receiveVoidEnergy(int amount, boolean simulate);
+    BlockPos getNodePosition();
+
+    void setNodePosition(BlockPos nodePosition);
+
+    int getVoidStored();
+
+    void setVoidStored(int set);
+
+    int getMaxVoidStored();
 
     int extractVoidEnergy(int amount, boolean simulate);
 
-    int getVoidEnergy();
-
-    void setVoidEnergy(int set);
-
-    int getMaxVoidEnergy();
+    int receiveVoidEnergy(int amount, boolean simulate);
 }
