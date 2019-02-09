@@ -125,7 +125,7 @@ public class BlockTileBase extends BlockContainer implements IModObject {
     }
 
     private void updateRedstone(World world, BlockPos pos) {
-        if (!world.isRemote) {
+        if (world != null && !world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof TileBase)
                 ((TileBase) tileEntity).redstonePower = world.getRedstonePowerFromNeighbors(pos);

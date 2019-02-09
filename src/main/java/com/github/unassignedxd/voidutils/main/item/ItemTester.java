@@ -18,20 +18,18 @@ public class ItemTester extends ItemBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if(!worldIn.isRemote) {
             if(playerIn != null) {
                 Chunk chunk = worldIn.getChunk(playerIn.getPosition());
                 if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)) {
                     IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
+                    System.out.println(voidChunk.getHasNaturalNode());
 
                     if(playerIn.isSneaking()) {
                         voidChunk.extractVoidEnergy(100, false);
                     } else {
-                        voidChunk.receiveVoidEnergy(100, false);
                     }
 
                 }
-            }
         }
 
         return super.onItemRightClick(worldIn, playerIn, handIn);

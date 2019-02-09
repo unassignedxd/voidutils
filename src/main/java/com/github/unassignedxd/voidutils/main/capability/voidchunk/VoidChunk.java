@@ -2,6 +2,7 @@ package com.github.unassignedxd.voidutils.main.capability.voidchunk;
 
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidTypes;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
+import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.block.ModBlocks;
 import com.github.unassignedxd.voidutils.main.network.NetworkManager;
 import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
@@ -23,17 +24,13 @@ public class VoidChunk implements IVoidChunk {
 
     private boolean shouldSendData = false;
 
-    public VoidChunk(Chunk chunk, EnumVoidTypes voidType, int voidEnergy, int maxVoidEnergy) {
+    public VoidChunk(Chunk chunk, EnumVoidTypes voidType, boolean hasNaturalNode, int voidEnergy, int maxVoidEnergy) {
         this.chunk = chunk;
         this.voidType = voidType;
         this.voidEnergy = voidEnergy;
         this.maxVoidEnergy = maxVoidEnergy;
+        this.hasNaturalNode = hasNaturalNode;
 
-        if(voidType.hasPossibleNaturalNode) {
-            if(chunk.getWorld().rand.nextDouble() < .25f){
-                this.hasNaturalNode = true;
-            }
-        }
     }
 
     @Override
@@ -50,6 +47,7 @@ public class VoidChunk implements IVoidChunk {
             this.nodePos = new BlockPos(this.chunk.x << 4, this.chunk.getHeightValue(8, 8), this.chunk.z << 4);
             if(this.chunk.getWorld().getBlockState(this.nodePos) != ModBlocks.VOID_NODE.getDefaultState()) {
                 this.chunk.getWorld().setBlockState(this.nodePos, ModBlocks.VOID_NODE.getDefaultState());
+                VoidUtils.logger.info("Spawned Void Node @ " + nodePos.toString());
             }
         }
     }
