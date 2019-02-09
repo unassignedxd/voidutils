@@ -9,7 +9,6 @@ import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class VoidChunk implements IVoidChunk {
 
@@ -30,13 +29,13 @@ public class VoidChunk implements IVoidChunk {
         this.voidEnergy = voidEnergy;
         this.maxVoidEnergy = maxVoidEnergy;
         this.hasNaturalNode = hasNaturalNode;
-
     }
 
     @Override
     public void onUpdate() {
         if(this.shouldSendData){
-            NetworkManager.sendToAllLoaded(this.chunk.getWorld(), new BlockPos(chunk.x << 4, 0, chunk.z << 4), voidPacketFactory());
+            NetworkManager.sendToAllLoaded(this.chunk.getWorld(), new BlockPos(chunk.x << 4, 0, chunk.z << 4),
+                    new PacketVoidChunk(this.getAttachedChunk(), this.getHasNaturalNode(), this.getVoidStored(), this.getVoidType().getId()));
             this.shouldSendData = false;
         }
     }
@@ -55,11 +54,6 @@ public class VoidChunk implements IVoidChunk {
     @Override
     public void onChunkUnload(ChunkEvent.Unload event) {
 
-    }
-
-    @Override
-    public IMessage voidPacketFactory() {
-        return new PacketVoidChunk(this.chunk, this.hasNaturalNode, this.voidEnergy, this.voidType.getId());
     }
 
     @Override

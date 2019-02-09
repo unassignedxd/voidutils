@@ -13,8 +13,6 @@ public interface IVoidChunk {
 
     void onChunkUnload(ChunkEvent.Unload event);
 
-    IMessage voidPacketFactory();
-
     Chunk getAttachedChunk();
 
     EnumVoidTypes getVoidType();

@@ -17,8 +17,8 @@ public class CapabilityUtil {
 
     public static EnumVoidTypes getRandedVoidType(Random random) {
         double d = random.nextDouble();
-        if(d > .15D && d < .575D) {return EnumVoidTypes.CORRUPTED; }
-        else if(d > .575D && d < 1D) { return EnumVoidTypes.PURE; }
+        if(d > .95D && d < .975D) {return EnumVoidTypes.CORRUPTED; }
+        else if(d > .975D && d < 1D) { return EnumVoidTypes.PURE; }
         else return EnumVoidTypes.NORMAL;
     }
 

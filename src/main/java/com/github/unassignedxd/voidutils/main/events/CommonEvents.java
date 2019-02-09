@@ -1,11 +1,13 @@
 package com.github.unassignedxd.voidutils.main.events;
 
+import com.github.unassignedxd.voidutils.api.capability.voidchunk.EnumVoidTypes;
 import com.github.unassignedxd.voidutils.api.capability.voidchunk.IVoidChunk;
 import com.github.unassignedxd.voidutils.main.VoidUtils;
 import com.github.unassignedxd.voidutils.main.capability.CapabilityProviderSerializable;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.CapabilityVoidChunk;
 import com.github.unassignedxd.voidutils.main.capability.voidchunk.VoidChunk;
 import com.github.unassignedxd.voidutils.main.network.NetworkManager;
+import com.github.unassignedxd.voidutils.main.network.packets.PacketVoidChunk;
 import com.github.unassignedxd.voidutils.main.util.CapabilityUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -27,7 +29,8 @@ public class CommonEvents {
     public static void onCapabilityAttachToChunk(AttachCapabilitiesEvent<Chunk> event) {
         Chunk chunk = event.getObject();
         if(chunk != null) {
-            IVoidChunk voidChunk = new VoidChunk(chunk, CapabilityUtil.getRandedVoidType(chunk.getWorld().rand), true, 5000, 10000);
+            EnumVoidTypes type = CapabilityUtil.getRandedVoidType(chunk.getWorld().rand);
+            IVoidChunk voidChunk = new VoidChunk(chunk, type, type.hasPossibleNaturalNode, 5000, 10000);
             event.addCapability(CapabilityVoidChunk.ID, new CapabilityProviderSerializable<>(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, voidChunk, CapabilityVoidChunk.DEFAULT_FACING));
         }
     }
@@ -70,8 +73,9 @@ public class CommonEvents {
         if(player != null && chunk != null) {
             if(chunk.hasCapability(CapabilityVoidChunk.CAPABILITY_VOID_CHUNK, null)){
                 IVoidChunk voidChunk = CapabilityVoidChunk.getVoidChunk(chunk);
-                if(voidChunk != null && voidChunk.voidPacketFactory() != null) {
-                    NetworkManager.sendToPlayer(player, voidChunk.voidPacketFactory());
+                if(voidChunk != null) {
+                    NetworkManager.sendToPlayer(player,
+                            new PacketVoidChunk(voidChunk.getAttachedChunk(), voidChunk.getHasNaturalNode(), voidChunk.getVoidStored(), voidChunk.getVoidType().getId()));
                 }
             }
         }
